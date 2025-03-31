@@ -1,0 +1,33 @@
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations: 
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+  hosts:
+    - host: staticpages.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+   - secretName: staticpages-tls
+     hosts:
+       - staticpages.local
+
+networkPolicy:
+  enabled: true
+  ingress:
+    enabled: true
+    rules: 
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+        ports:
+          - port: 8000
+            protocol: TCP
+  egress:
+    enabled: true

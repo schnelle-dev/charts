@@ -1,0 +1,14 @@
+{{- if .Values.podDisruptionBudget.enabled -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "staticpages.fullname" . }}
+  labels:
+    {{- include "staticpages.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | default 1 }}
+  unhealthyPodEvictionPolicy: {{ .Values.podDisruptionBudget.unhealthyPodEvictionPolicy | default "DoNotEvict" }}
+  selector:
+    matchLabels:
+      {{- include "staticpages.selectorLabels" . | nindent 6 }}
+{{- end }}

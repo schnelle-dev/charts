@@ -1,0 +1,9 @@
+apiVersion: v2
+name: staticpages
+description: Chart for my static web pages
+
+type: application
+
+version: 0.1.0
+
+appVersion: "0.1.0"

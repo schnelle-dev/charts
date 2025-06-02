@@ -20,4 +20,15 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/paperless-0.1.12/paperless-0.1.12.tgz
     version: 0.1.12
-generated: "2025-06-02T11:16:30.169431878Z"
+  staticpages:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-06-02T11:50:20.159611241Z"
+    description: Chart for my static web pages
+    digest: 78c308148348634d1c11f112bdddf4ce2c564c0f5f3d11a3efb9f73be92ba26a
+    name: staticpages
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
+    version: 0.1.1
+generated: "2025-06-02T11:50:20.159617954Z"

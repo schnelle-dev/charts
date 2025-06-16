@@ -3,6 +3,25 @@ entries:
   paperless:
   - apiVersion: v2
     appVersion: 2.16.3
+    created: "2025-06-16T22:10:10.452848845Z"
+    dependencies:
+    - condition: valkey.enabled
+      name: valkey
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 3.0.14
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.11
+    description: A Helm chart for Paperless
+    digest: c129fc37779dd1df66d2b1e76bbd07c11cfc1693197e3025899c0b4bfd128903
+    name: paperless
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/paperless-0.1.21/paperless-0.1.21.tgz
+    version: 0.1.21
+  - apiVersion: v2
+    appVersion: 2.16.3
     created: "2025-06-14T23:41:45.951310433Z"
     dependencies:
     - condition: valkey.enabled
@@ -183,4 +202,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-06-14T23:41:45.951363994Z"
+generated: "2025-06-16T22:10:10.452903698Z"

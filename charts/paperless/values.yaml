@@ -113,11 +113,5 @@ paperless:
     adminPasswordKey: "admin-password"
     redisPasswordKey: Null
 
-postgresql:
-  enabled: false
-
-postgresql-ha:
-  enabled: false
-
 valkey:
   enabled: false

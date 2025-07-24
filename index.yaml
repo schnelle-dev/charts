@@ -286,6 +286,22 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/paperless-0.1.12/paperless-0.1.12.tgz
     version: 0.1.12
+  pterodactyl-panel:
+  - apiVersion: v2
+    appVersion: 1.11.11
+    created: "2025-07-24T14:01:19.755747744Z"
+    dependencies:
+    - condition: valkey.enabled
+      name: valkey
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 3.0.22
+    description: Pterodactyl Panel Helm Chart
+    digest: 82c89e63a5199af510296e57b09375c7d5184aa967f44a9d1cb9c429683442d0
+    name: pterodactyl-panel
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/pterodactyl-panel-0.1.0/pterodactyl-panel-0.1.0.tgz
+    version: 0.1.0
   staticpages:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -297,4 +313,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-07-18T19:31:20.610394936Z"
+generated: "2025-07-24T14:01:19.755787569Z"

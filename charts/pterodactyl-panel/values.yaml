@@ -1,0 +1,110 @@
+panel:
+  debug: false
+  url: "https://panel.example.com"
+  trusted_proxies: "*"
+  database:
+    host: mariadb-primary
+    port: 3306
+    name: panel
+    existingSecret:
+      secretName: pterodactyl-panel-db
+      usernameKey: username
+      passwordKey: password
+
+  appKey:
+    existingSecret:
+      secretName: pterodactyl-panel
+      key: appKey
+
+  redis:
+    host: app-valkey-master
+    port: 6379
+    auth:
+      enabled: true
+      existingSecret:
+        secretName: pterodactyl-panel
+        passwordKey: redis-password
+
+  cache_driver: file
+  session_driver: file
+  queue_connection: sync
+
+persistence:
+  appStorage:
+    storageClass: null
+    accessModes:
+      - ReadWriteMany
+    size: 4Gi
+  varStorage:
+    storageClass: null
+    accessModes:
+      - ReadWriteMany
+    size: 4Gi
+
+
+image:
+  repository: ghcr.io/pterodactyl/panel
+  pullPolicy: IfNotPresent
+  tag: "v1.11.11"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:  {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+valkey:
+  enabled: false

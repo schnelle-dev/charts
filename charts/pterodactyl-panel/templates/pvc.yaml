@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pterodactyl-panel.fullname" . }}-data
+  labels:
+    {{- include "pterodactyl-panel.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.appStorage.accessModes | nindent 2 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.appStorage.size }}
+  {{- if .Values.persistence.appStorage.storageClass }}
+  storageClassName: {{ .Values.persistence.appStorage.storageClass }}
+  {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pterodactyl-panel.fullname" . }}-var
+  labels:
+    {{- include "pterodactyl-panel.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.varStorage.accessModes | nindent 2 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.varStorage.size }}
+  {{- if .Values.persistence.varStorage.storageClass }}
+  storageClassName: {{ .Values.persistence.varStorage.storageClass }}
+  {{- end }}

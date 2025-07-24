@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pterodactyl-panel.fullname" . }}
+  labels:
+    {{- include "pterodactyl-panel.labels" . | nindent 4 }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      {{- include "pterodactyl-panel.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "pterodactyl-panel.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "pterodactyl-panel.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z $DB_HOST $DB_PORT; do
+                echo "Waiting for MariaDB..."
+                sleep 3
+              done
+          env:
+            - name: DB_HOST
+              value: {{ .Values.panel.database.host | quote }}
+            - name: DB_PORT
+              value: {{ .Values.panel.database.port | quote }}
+        {{- if .Values.panel.redis }}
+        - name: wait-for-redis
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z $REDIS_HOST $REDIS_PORT; do
+                echo "Waiting for Redis..."
+                sleep 3
+              done
+          env:
+            - name: REDIS_HOST
+              value: {{ .Values.panel.redis.host | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.panel.redis.port | quote }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          - name: {{ include "pterodactyl-panel.fullname" . }}-data
+            mountPath: /var/www/html/storage
+          - name: {{ include "pterodactyl-panel.fullname" . }}-temp
+            mountPath: /tmp
+          - name: {{ include "pterodactyl-panel.fullname" . }}-var
+            mountPath: /app/var
+          env:
+            - name: APP_ENV
+              value: {{ .Values.panel.environment | default "production" }}
+            - name: APP_DEBUG
+              value: {{ .Values.panel.debug | quote }}
+            - name: DB_HOST
+              value: {{ .Values.panel.database.host | quote }}
+            - name: DB_PORT
+              value: {{ .Values.panel.database.port | quote }}
+            - name: DB_DATABASE
+              value: {{ .Values.panel.database.name | quote }}
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.panel.database.existingSecret.secretName }}
+                  key: {{ .Values.panel.database.existingSecret.usernameKey }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.panel.database.existingSecret.secretName }}
+                  key: {{ .Values.panel.database.existingSecret.passwordKey }}
+            - name: REDIS_HOST
+              value: {{ .Values.panel.redis.host | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.panel.redis.port | quote }}
+            {{- if .Values.panel.redis.auth.enabled }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.panel.redis.auth.existingSecret.secretName }}
+                  key: {{ .Values.panel.redis.auth.existingSecret.passwordKey }}
+            {{- end }}
+            - name: CACHE_DRIVER
+              value: {{ .Values.panel.cache_driver | quote }}
+            - name: SESSION_DRIVER
+              value: {{ .Values.panel.session_driver | quote }}
+            - name: QUEUE_CONNECTION
+              value: {{ .Values.panel.queue_connection | quote }}
+            - name: QUEUE_DRIVER
+              value: {{ .Values.panel.queue_driver | quote }}
+            - name: APP_URL
+              value: {{ .Values.panel.url | quote }}
+            - name: TRUSTED_PROXIES
+              value: {{ .Values.panel.trusted_proxies | quote }}
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.panel.appKey.existingSecret.secretName }}
+                  key: {{ .Values.panel.appKey.existingSecret.key }}
+
+      volumes:
+      - name: {{ include "pterodactyl-panel.fullname" . }}-data
+        persistentVolumeClaim:
+          claimName: {{ include "pterodactyl-panel.fullname" . }}-data
+      - name: {{ include "pterodactyl-panel.fullname" . }}-temp
+        emptyDir: {}
+      - name: {{ include "pterodactyl-panel.fullname" . }}-var
+        persistentVolumeClaim:
+          claimName: {{ include "pterodactyl-panel.fullname" . }}-var
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

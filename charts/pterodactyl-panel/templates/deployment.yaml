@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "pterodactyl-panel.labels" . | nindent 4 }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       {{- include "pterodactyl-panel.selectorLabels" . | nindent 6 }}

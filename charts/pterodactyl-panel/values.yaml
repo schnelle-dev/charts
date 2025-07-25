@@ -2,6 +2,7 @@ replicas: 1
 
 panel:
   debug: false
+  telemetry: true
   url: "https://panel.example.com"
   trusted_proxies: "*"
   database:
@@ -42,6 +43,28 @@ persistence:
     accessModes:
       - ReadWriteMany
     size: 4Gi
+
+# set to local if s3 is disabled
+backups:
+  s3:
+    enabled: false
+    bucket: ""
+    region: ""
+    endpoint: ""
+    accessKeyId:
+      existingSecret:
+        secretName: pterodactyl-panel
+        key: s3-access-key-id
+    secretAccessKey:
+      existingSecret:
+        secretName: pterodactyl-panel
+        key: s3-secret-access-key
+
+    storageClass: null
+    # 5GB
+    maximumPartSize: "5368709120"
+    # minutes
+    presignedUrlExpiration: "60"
 
 
 image:

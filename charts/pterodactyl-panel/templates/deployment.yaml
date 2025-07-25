@@ -99,6 +99,8 @@ spec:
               value: {{ .Values.panel.environment | default "production" }}
             - name: APP_DEBUG
               value: {{ .Values.panel.debug | quote }}
+            - name: PTERODACTYL_TELEMTRY_ENABLED
+              value: {{ .Values.panel.telemetry | quote }}
             - name: DB_HOST
               value: {{ .Values.panel.database.host | quote }}
             - name: DB_PORT
@@ -143,6 +145,39 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.panel.appKey.existingSecret.secretName }}
                   key: {{ .Values.panel.appKey.existingSecret.key }}
+            {{- if .Values.backups.s3.enabled }}
+            - name: APP_BACKUP_DRIVER
+              value: "s3"
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.backups.s3.region | quote }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backups.s3.accessKeyId.existingSecret.secretName }}
+                  key: {{ .Values.backups.s3.accessKeyId.existingSecret.key }}
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backups.s3.secretAccessKey.existingSecret.secretName }}
+                  key: {{ .Values.backups.s3.secretAccessKey.existingSecret.key }}
+            - name: AWS_BACKUPS_BUCKET
+              value: {{ .Values.backups.s3.bucket | quote }}
+            - name: AWS_ENDPOINT
+              value: {{ .Values.backups.s3.endpoint | quote }}
+            - name: BACKUP_MAX_PART_SIZE
+              value: {{ .Values.backups.s3.maximumPartSize | quote }}
+            - name: BACKUP_PRESIGNED_URL_LIFESPAM
+              value: {{ .Values.backups.s3.presignedUrlExpiration | quote }}
+
+            {{- if .Values.backups.s3.storageClass }}
+            - name: AWS_BACKUPS_STORAGE_CLASS
+              value: {{ .Values.backups.s3.storageClass | quote }}
+            {{- end }}
+
+            {{- else }}
+            - name: APP_BACKUP_DRIVER
+              value: "wings"
+            {{- end }}
 
       volumes:
       - name: {{ include "pterodactyl-panel.fullname" . }}-data

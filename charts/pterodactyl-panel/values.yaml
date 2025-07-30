@@ -133,3 +133,4 @@ affinity: {}
 
 valkey:
   enabled: false
+  architecture: standalone

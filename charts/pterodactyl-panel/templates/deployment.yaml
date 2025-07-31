@@ -94,6 +94,11 @@ spec:
             mountPath: /tmp
           - name: {{ include "pterodactyl-panel.fullname" . }}-var
             mountPath: /app/var
+          {{- if .Values.panel.redis.tls.enabled }}
+          - name: redis-certificates
+            mountPath: /tls/redis
+            readOnly: true
+          {{- end }}
           env:
             - name: APP_ENV
               value: {{ .Values.panel.environment | default "production" }}
@@ -128,6 +133,19 @@ spec:
                   name: {{ .Values.panel.redis.auth.existingSecret.secretName }}
                   key: {{ .Values.panel.redis.auth.existingSecret.passwordKey }}
             {{- end }}
+            {{- if .Values.panel.redis.tls.enabled }}
+            - name: REDIS_VERIFY_PEER
+              value: "true"
+            - name: REDIS_VERIFY_PEER_NAME
+              value: "true"
+            - name: REDIS_CAFILE
+              value: /tls/redis/ca.crt
+            - name: REDIS_LOCAL_CERT
+              value: /tls/redis/tls.crt
+            - name: REDIS_LOCAL_PK
+              value: /tls/redis/tls.key
+            {{- end }}
+  
             - name: CACHE_DRIVER
               value: {{ .Values.panel.cache_driver | quote }}
             - name: SESSION_DRIVER
@@ -188,6 +206,12 @@ spec:
       - name: {{ include "pterodactyl-panel.fullname" . }}-var
         persistentVolumeClaim:
           claimName: {{ include "pterodactyl-panel.fullname" . }}-var
+      {{- if .Values.panel.redis.tls.enabled }}
+      - name: redis-certificates
+        secret:
+          defaultMode: 256
+          secretName: {{ .Values.panel.redis.tls.secretName }}
+      {{- end }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

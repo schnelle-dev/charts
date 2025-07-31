@@ -144,6 +144,8 @@ spec:
               value: /tls/redis/tls.crt
             - name: REDIS_LOCAL_PK
               value: /tls/redis/tls.key
+            - name: REDIS_CLIENT
+              value: "phpredis"
             {{- end }}
   
             - name: CACHE_DRIVER

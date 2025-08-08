@@ -3,6 +3,21 @@ entries:
   paperless:
   - apiVersion: v2
     appVersion: 2.17.1
+    created: "2025-08-08T09:46:52.852091822Z"
+    dependencies:
+    - condition: valkey.enabled
+      name: valkey
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 3.0.26
+    description: A Helm chart for Paperless
+    digest: 930837890d013b7e1f6dbeb7565908e4b1c81cb281e5d0a66cc0e193bf4933b2
+    name: paperless
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/paperless-0.1.27/paperless-0.1.27.tgz
+    version: 0.1.27
+  - apiVersion: v2
+    appVersion: 2.17.1
     created: "2025-07-18T19:31:20.610242849Z"
     dependencies:
     - condition: valkey.enabled
@@ -289,6 +304,21 @@ entries:
   pterodactyl-panel:
   - apiVersion: v2
     appVersion: 1.11.11
+    created: "2025-08-08T09:46:52.983596255Z"
+    dependencies:
+    - condition: valkey.enabled
+      name: valkey
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 3.0.26
+    description: Pterodactyl Panel Helm Chart
+    digest: 29ef32ffe90780ffe96b1ed36804c3519ff223be7292a52f99b9fb06dd06341d
+    name: pterodactyl-panel
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/pterodactyl-panel-0.2.0/pterodactyl-panel-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.11.11
     created: "2025-07-30T13:09:13.414553446Z"
     dependencies:
     - condition: valkey.enabled
@@ -358,4 +388,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-07-30T13:09:13.414608261Z"
+generated: "2025-08-08T09:46:52.983731124Z"

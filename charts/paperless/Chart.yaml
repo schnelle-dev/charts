@@ -6,7 +6,8 @@ type: application
 
 version: 0.1.29
 
-appVersion: "2.18.2"
+# renovate: image=ghcr.io/paperless-ngx/paperless-ngx
+appVersion: 2.18.2
 
 dependencies:
   - name: valkey

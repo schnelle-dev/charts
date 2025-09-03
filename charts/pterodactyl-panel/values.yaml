@@ -70,7 +70,7 @@ backups:
 image:
   repository: ghcr.io/pterodactyl/panel
   pullPolicy: IfNotPresent
-  tag: "v1.11.11"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""

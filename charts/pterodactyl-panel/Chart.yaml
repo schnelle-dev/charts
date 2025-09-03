@@ -6,7 +6,8 @@ type: application
 
 version: 0.2.1
 
-appVersion: "1.11.11"
+# renovate: image=ghcr.io/pterodactyl/panel
+appVersion: v1.11.11
 
 dependencies:
   - name: valkey

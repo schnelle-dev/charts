@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":reviewer(nikkischnelle)"
   ],
   "kubernetes": {
     "fileMatch": [
@@ -9,7 +10,23 @@
       "\\.yml$"
     ]
   },
-  "extends": [
-    ":reviewer(nikkischnelle)"
+  "bumpVersions": [
+    {
+      "filePatterns": ["{{packageFileDir}}/Chart.{yaml,yml}"],
+      "matchStrings": ["version:\\s(?<version>[^\\s]+)"],
+      "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "managerFilePatterns": [
+        "/(^|/)Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "#\\s*renovate: image=(?<depName>.*?)\\s+appVersion:\\s*[\"']?(?<currentValue>[\\w+\\.\\-]*)"
+      ]
+    }
   ]
 }

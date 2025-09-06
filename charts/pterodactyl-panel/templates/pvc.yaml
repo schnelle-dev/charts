@@ -30,3 +30,19 @@ spec:
   {{- if .Values.persistence.varStorage.storageClass }}
   storageClassName: {{ .Values.persistence.varStorage.storageClass }}
   {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pterodactyl-panel.fullname" . }}-app
+  labels:
+    {{- include "pterodactyl-panel.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.app.accessModes | nindent 2 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.app.size }}
+  {{- if .Values.persistence.app.storageClass }}
+  storageClassName: {{ .Values.persistence.app.storageClass }}
+  {{- end }}

@@ -4,9 +4,9 @@ description: Pterodactyl Panel Helm Chart
 
 type: application
 
-version: 0.2.4
+version: 0.2.5
 
-# renovate: image=ghcr.io/pterodactyl/panel
+# renovate: image=ghcr.io/blueprintframework/blueprint
 appVersion: v1.11.11
 
 dependencies:

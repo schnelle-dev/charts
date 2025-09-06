@@ -94,6 +94,9 @@ spec:
             mountPath: /tmp
           - name: {{ include "pterodactyl-panel.fullname" . }}-var
             mountPath: /app/var
+          {{- with .Values.additionalVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: APP_ENV
               value: {{ .Values.panel.environment | default "production" }}
@@ -188,6 +191,9 @@ spec:
       - name: {{ include "pterodactyl-panel.fullname" . }}-var
         persistentVolumeClaim:
           claimName: {{ include "pterodactyl-panel.fullname" . }}-var
+      {{- with .Values.additionalVolumes }}
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

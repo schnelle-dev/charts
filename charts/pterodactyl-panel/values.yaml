@@ -134,3 +134,11 @@ affinity: {}
 valkey:
   enabled: false
   architecture: standalone
+
+additionalVolumes: []
+  # - name: my-volume
+  #   emptyDir: {}
+
+additionalVolumeMounts: []
+  # - name: my-volume
+  #   mountPath: /path/in/container

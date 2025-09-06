@@ -349,6 +349,21 @@ entries:
   pterodactyl-panel:
   - apiVersion: v2
     appVersion: v1.11.11
+    created: "2025-09-06T11:29:29.540694952Z"
+    dependencies:
+    - condition: valkey.enabled
+      name: valkey
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 3.0.31
+    description: Pterodactyl Panel Helm Chart
+    digest: 29e6664a2229f9783e0d740f27f9d367a3d1b00f5443fd4dee3979c05d42ee77
+    name: pterodactyl-panel
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/pterodactyl-panel-0.2.4/pterodactyl-panel-0.2.4.tgz
+    version: 0.2.4
+  - apiVersion: v2
+    appVersion: v1.11.11
     created: "2025-09-06T11:21:23.980733539Z"
     dependencies:
     - condition: valkey.enabled
@@ -478,4 +493,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-09-06T11:21:23.980807048Z"
+generated: "2025-09-06T11:29:29.540775914Z"

@@ -4,7 +4,7 @@ description: Pterodactyl Panel Helm Chart
 
 type: application
 
-version: 0.2.1
+version: 0.2.4
 
 # renovate: image=ghcr.io/pterodactyl/panel
 appVersion: v1.11.11

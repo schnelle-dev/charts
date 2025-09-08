@@ -4,10 +4,10 @@ description: A Helm chart for Paperless
 
 type: application
 
-version: 0.1.30
+version: 0.1.31
 
 # renovate: image=ghcr.io/paperless-ngx/paperless-ngx
-appVersion: 2.18.3
+appVersion: 2.18.4
 
 dependencies:
   - name: valkey

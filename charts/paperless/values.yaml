@@ -49,9 +49,9 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-   - secretName: chart-example-tls
-     hosts:
-       - chart-example.local
+    - secretName: chart-example-tls
+      hosts:
+        - chart-example.local
 
 resources:
   requests:
@@ -73,24 +73,24 @@ readinessProbe:
   initialDelaySeconds: 60
 
 volumes:
-- name: data
-  claimName: paperless-ngx-data
-  mountPath: /usr/src/paperless/data
-  accessMode: ReadWriteMany
-  size: 5Gi
-- name: media
-  claimName: paperless-ngx-media
-  mountPath: /usr/src/paperless/media
-  accessMode: ReadWriteMany
-  size: 5Gi
-- name: export
-  claimName: paperless-ngx-export
-  mountPath: /usr/src/paperless/export
-  accessMode: ReadWriteMany
-  size: 5Gi
-- name: consume
-  mountPath: /usr/src/paperless/consume
-  emptyDir: {}
+  - name: data
+    claimName: paperless-ngx-data
+    mountPath: /usr/src/paperless/data
+    accessMode: ReadWriteMany
+    size: 5Gi
+  - name: media
+    claimName: paperless-ngx-media
+    mountPath: /usr/src/paperless/media
+    accessMode: ReadWriteMany
+    size: 5Gi
+  - name: export
+    claimName: paperless-ngx-export
+    mountPath: /usr/src/paperless/export
+    accessMode: ReadWriteMany
+    size: 5Gi
+  - name: consume
+    mountPath: /usr/src/paperless/consume
+    emptyDir: {}
 
 TZ: Europe/Amsterdam
 
@@ -102,7 +102,7 @@ paperless:
   dbPort: 5432
   dbName: paperless
   dbUser: paperless
-  redisHost: "paperless-valkey-master"
+  redisHost: "paperless-valkey"
   redisPort: 6379
 
   existingSecret:
@@ -112,6 +112,3 @@ paperless:
     adminUsernameKey: "admin-username"
     adminPasswordKey: "admin-password"
     redisPasswordKey: Null
-
-valkey:
-  enabled: false

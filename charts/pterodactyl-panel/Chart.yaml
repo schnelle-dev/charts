@@ -4,13 +4,7 @@ description: Pterodactyl Panel Helm Chart
 
 type: application
 
-version: 0.2.4
+version: 0.3.0
 
 # renovate: image=ghcr.io/pterodactyl/panel
 appVersion: v1.11.11
-
-dependencies:
-  - name: valkey
-    version: 3.0.31
-    repository: oci://registry-1.docker.io/bitnamicharts
-    condition: valkey.enabled

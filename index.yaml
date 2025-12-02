@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   paperless:
   - apiVersion: v2
+    appVersion: 2.20.1
+    created: "2025-12-02T05:31:50.496225641Z"
+    description: A Helm chart for Paperless
+    digest: 818089f3ddc9a8a5bc3032e35a951852ed02427e3bc0584379bad7c1494614d5
+    name: paperless
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/paperless-0.4.1/paperless-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
     appVersion: 2.20.0
     created: "2025-11-23T04:35:05.774190292Z"
     description: A Helm chart for Paperless
@@ -588,4 +598,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-11-23T04:35:05.774492808Z"
+generated: "2025-12-02T05:31:50.496511114Z"

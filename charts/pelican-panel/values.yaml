@@ -47,7 +47,9 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  fsGroup: 82
+  fsGroupChangePolicy: "Always"
 
 securityContext: {}
 
@@ -111,14 +113,17 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
+livenessProbe: &probe
+  exec:
+    command:
+      - sh
+      - /healthcheck.sh
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe: *probe
 
 # Additional volumes on the output Deployment definition.
 volumes: []

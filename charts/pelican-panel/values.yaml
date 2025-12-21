@@ -47,7 +47,8 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  fsGroup: 1000
 
 securityContext:
   capabilities:

@@ -31,6 +31,25 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
+        - name: create-supervisord-logs-dir-as-user
+          image: busybox:latest
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /var/www/html/storage/logs/supervisord
+              chown -R {{ .Values.pelican.runAsUser }}:{{ .Values.pelican.runAsGroup }} /var/www/html/storage/logs
+              ls -lah /var/www/html/storage/logs
+          volumeMounts:
+          {{- if .Values.pelican.logsPVC.enabled }}
+            - name: logs
+              mountPath: /var/www/html/storage/logs
+          {{- else }}
+            {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
         {{- if .Values.pelican.externalDatabase.enabled }}
         - name: wait-for-db
           image: busybox

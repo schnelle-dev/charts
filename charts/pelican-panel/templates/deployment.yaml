@@ -1,0 +1,179 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pelican-panel.fullname" . }}
+  labels:
+    {{- include "pelican-panel.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "pelican-panel.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "pelican-panel.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "pelican-panel.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- if .Values.pelican.externalDatabase.enabled }}
+        - name: wait-for-db
+          image: busybox
+          command:
+          - sh
+          - -c
+          - |
+            until nc -z $DB_HOST $DB_PORT; do
+              echo "Waiting for MariaDB..."
+              sleep 3
+            done
+          env:
+          - name: DB_HOST
+            value: {{ .Values.pelican.externalDatabase.host | quote }}
+          - name: DB_PORT
+            value: "{{ .Values.pelican.externalDatabase.port }}"
+        {{- end }}
+        {{- if .Values.pelican.redis.enabled }}
+        - name: wait-for-redis
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z $REDIS_HOST $REDIS_PORT; do
+                echo "Waiting for Redis..."
+                sleep 3
+              done
+          env:
+            - name: REDIS_HOST
+              value: {{ .Values.pelican.redis.host | quote }}
+            - name: REDIS_PORT
+              value: "{{ .Values.pelican.redis.port }}"
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          - name: caddy-config
+            mountPath: /etc/caddy/Caddyfile
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.pelican.logsPVC.enabled }}
+          - name: logs
+            mountPath: /var/www/html/storage/logs
+          - name: temp
+            mountPath: /tmp
+          {{- end }}
+          {{- if .Values.pelican.dataPVC.enabled }}
+          - name: pelican-data
+            mountPath: /pelican-data
+          {{- end }}
+          env:
+          - name: XDG_DATA_HOME
+            value: /pelican-data
+          - name: ADMIN_EMAIL
+            value: {{ .Values.pelican.adminEmail | quote }}
+          - name: APP_URL
+            value: {{ .Values.pelican.appUrl | quote }}
+          {{- if .Values.pelican.externalDatabase.enabled }}
+          - name: DB_HOST
+            value: {{ .Values.pelican.externalDatabase.host | quote }}
+          - name: DB_PORT
+            value: "{{ .Values.pelican.externalDatabase.port }}"
+          - name: DB_DATABASE
+            value: {{ .Values.pelican.externalDatabase.database | quote }}
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.externalDatabase.externalSecretName }}
+                key: {{ .Values.pelican.externalDatabase.usernameKey }}
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.externalDatabase.externalSecretName }}
+                key: {{ .Values.pelican.externalDatabase.passwordKey }}
+          {{- end }}
+          {{- if .Values.pelican.redis.enabled }}
+          - name: REDIS_HOST
+            value: {{ .Values.pelican.redis.host | quote }}
+          - name: REDIS_PORT
+            value: "{{ .Values.pelican.redis.port }}"
+          {{- if and .Values.pelican.redis.enabled .Values.pelican.redis.auth.enabled }}
+          - name: REDIS_PASSWORD
+            value: {{ .Values.pelican.redis.auth.password | quote }}
+          {{- end }}
+          - name: CACHE_DRIVER
+            value: redis
+          - name: SESSION_DRIVER
+            value: redis
+          - name: QUEUE_DRIVER
+            value: redis
+          {{- end }}
+      volumes:
+      - name: caddy-config
+        configMap:
+          name: {{ include "pelican-panel.fullname" . }}-caddy-config
+      - name: temp
+        emptyDir: {}
+      {{- if .Values.pelican.logsPVC.enabled }}
+      - name: logs
+        persistentVolumeClaim:
+          claimName: {{ include "pelican-panel.fullname" . }}-logs
+      {{- end }}
+      {{- if .Values.pelican.dataPVC.enabled }}
+      - name: pelican-data
+        persistentVolumeClaim:
+          claimName: {{ include "pelican-panel.fullname" . }}-data
+      {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

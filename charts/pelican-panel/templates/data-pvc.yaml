@@ -1,0 +1,15 @@
+{{- if .Values.pelican.dataPVC.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pelican-panel.fullname" . }}-data
+  labels:
+    {{- include "pelican-panel.labels" . | nindent 4 }}
+spec:
+  accessModes: 
+    {{ toYaml .Values.pelican.dataPVC.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.pelican.dataPVC.size }}
+  storageClassName: {{ .Values.pelican.dataPVC.storageClassName | quote }}
+{{- end }}

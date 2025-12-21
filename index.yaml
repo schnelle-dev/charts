@@ -464,6 +464,16 @@ entries:
   pelican-panel:
   - apiVersion: v2
     appVersion: v1.0.0-beta30
+    created: "2025-12-21T14:06:46.604737929Z"
+    description: A Helm chart for Kubernetes
+    digest: 77a5725f51ea948c045b531dbaf3c3db47744b97291abb0df96bc65c3c036974
+    name: pelican-panel
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/pelican-panel-0.1.2/pelican-panel-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: v1.0.0-beta30
     created: "2025-12-21T14:05:13.21811425Z"
     description: A Helm chart for Kubernetes
     digest: be1683518c21e4e134a1bd733b3b76ae36e03445360d8748fa7e4083d14aea7d
@@ -639,4 +649,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-12-21T14:05:13.218236127Z"
+generated: "2025-12-21T14:06:46.604877792Z"

@@ -91,7 +91,7 @@ spec:
           {{- end }}
           volumeMounts:
           - name: caddy-config
-            mountPath: /etc/caddy/Caddyfile
+            mountPath: /etc/caddy
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}

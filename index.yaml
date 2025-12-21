@@ -461,6 +461,17 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/paperless-0.1.12/paperless-0.1.12.tgz
     version: 0.1.12
+  pelican-panel:
+  - apiVersion: v2
+    appVersion: 1.0.0-beta30
+    created: "2025-12-21T13:55:48.462641727Z"
+    description: A Helm chart for Kubernetes
+    digest: 56b9167ae4625eb097a7a70a806f1d3f24b18d5dda6b21e8570318e3bd7bf8b9
+    name: pelican-panel
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/pelican-panel-0.1.0/pelican-panel-0.1.0.tgz
+    version: 0.1.0
   pterodactyl-panel:
   - apiVersion: v2
     appVersion: v1.11.11
@@ -618,4 +629,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2025-12-18T21:04:17.085476921Z"
+generated: "2025-12-21T13:55:48.462745792Z"

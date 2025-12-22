@@ -18,16 +18,18 @@ pelican:
     host: ""
     port: 5432
     database: ""
-    externalSecretName: ""
-    usernameKey: ""
-    passwordKey: ""
+    auth:
+      externalSecretName: ""
+      usernameKey: ""
+      passwordKey: ""
   redis:
     enabled: false
     host: ""
     port: 6379
     auth:
       enabled: false
-      password: ""
+      externalSecretName: ""
+      passwordKey: ""
 
 pluginDownloader:
   image:
@@ -73,7 +75,7 @@ podSecurityContext:
   fsGroup: 82
   fsGroupChangePolicy: "Always"
 
-securityContext: 
+securityContext:
   runAsUser: 82
   runAsGroup: 82
   runAsNonRoot: true

@@ -133,13 +133,13 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.pelican.externalDatabase.externalSecretName }}
-                key: {{ .Values.pelican.externalDatabase.usernameKey }}
+                name: {{ .Values.pelican.externalDatabase.auth.externalSecretName }}
+                key: {{ .Values.pelican.externalDatabase.auth.usernameKey }}
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.pelican.externalDatabase.externalSecretName }}
-                key: {{ .Values.pelican.externalDatabase.passwordKey }}
+                name: {{ .Values.pelican.externalDatabase.auth.externalSecretName }}
+                key: {{ .Values.pelican.externalDatabase.auth.passwordKey }}
           {{- end }}
           {{- if .Values.pelican.redis.enabled }}
           - name: REDIS_HOST

@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pelican-panel.fullname" . }}-plugin-downloader-script
+  labels:
+    {{- include "pelican-panel.labels" . | nindent 4 }}
+data:
+  plugin-downloader-script.sh: |
+    #!/bin/sh
+    set -euo pipefail
+
+    PLUGIN_DIR="/pelican-data/plugins"
+    mkdir -p "$PLUGIN_DIR"
+
+    {{- range $idx, $repo := .Values.pluginDownloader.repoDownloads }}
+    echo "Downloading plugins from {{ $repo.url }}"
+    TMP_ZIP="$(mktemp)"
+    EXTRACT_DIR="$(mktemp -d)"
+    cleanup() {
+      rm -f "$TMP_ZIP"
+      rm -rf "$EXTRACT_DIR"
+    }
+    trap cleanup EXIT
+
+    if command -v curl >/dev/null 2>&1; then
+      curl -fSL -o "$TMP_ZIP" "{{ $repo.url }}"
+    else
+      wget -q -O "$TMP_ZIP" "{{ $repo.url }}"
+    fi
+
+    unzip -q "$TMP_ZIP" -d "$EXTRACT_DIR"
+
+    {{- range $repo.plugins }}
+    PLUGIN_NAME="{{ . }}"
+    echo "Installing plugin: $PLUGIN_NAME"
+    PLUGIN_SRC="$(find "$EXTRACT_DIR" -type d -name "$PLUGIN_NAME" -print -quit || true)"
+    if [ -z "$PLUGIN_SRC" ]; then
+      echo "ERROR: plugin $PLUGIN_NAME not found in archive from {{ $repo.url }}" >&2
+      exit 1
+    fi
+
+    {{- if $repo.replaceExisting }}
+    # replaceExisting = true (default) -> remove existing and install new
+    if [ -d "$PLUGIN_DIR/$PLUGIN_NAME" ]; then
+      echo "Replacing existing plugin $PLUGIN_NAME"
+      rm -rf "$PLUGIN_DIR/$PLUGIN_NAME"
+    fi
+    mv "$PLUGIN_SRC" "$PLUGIN_DIR/$PLUGIN_NAME"
+    {{- else }}
+    # replaceExisting = false -> skip if exists, otherwise install
+    if [ -d "$PLUGIN_DIR/$PLUGIN_NAME" ]; then
+      echo "Plugin $PLUGIN_NAME already exists, skipping (replaceExisting=false)"
+    else
+      mv "$PLUGIN_SRC" "$PLUGIN_DIR/$PLUGIN_NAME"
+    fi
+    {{- end }}
+
+    {{- end }}
+
+    # cleanup for this repo (trap will also execute on exit)
+    cleanup
+    {{- end }}
+
+    {{- range .Values.pluginDownloader.directDownloads }}
+    echo "Downloading plugin from {{ .url }}"
+    TMP_ZIP="$(mktemp)"
+    cleanup() {
+      rm -f "$TMP_ZIP"
+    }
+    trap cleanup EXIT
+
+    if command -v curl >/dev/null 2>&1; then
+      curl -fSL -o "$TMP_ZIP" "{{ .url }}"
+    else
+      wget -q -O "$TMP_ZIP" "{{ .url }}"
+    fi
+
+    PLUGIN_NAME="{{ .name }}"
+    {{- if .replaceExisting }}
+    if [ -d "$PLUGIN_DIR/$PLUGIN_NAME" ]; then
+      echo "Replacing existing plugin $PLUGIN_NAME"
+      rm -rf "$PLUGIN_DIR/$PLUGIN_NAME"
+    fi
+    unzip -q "$TMP_ZIP" -d "$PLUGIN_DIR/$PLUGIN_NAME"
+    {{- else }}
+    if [ -d "$PLUGIN_DIR/$PLUGIN_NAME" ]; then
+      echo "Plugin $PLUGIN_NAME already exists, skipping (replaceExisting=false)"
+    else
+      unzip -q "$TMP_ZIP" -d "$PLUGIN_DIR/$PLUGIN_NAME"
+    fi
+    {{- end }}
+
+    # cleanup (trap will also execute on exit)
+    cleanup
+    {{- end }}
+
+    echo "Plugin download and installation complete."

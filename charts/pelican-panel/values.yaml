@@ -29,6 +29,28 @@ pelican:
       enabled: false
       password: ""
 
+pluginDownloader:
+  image:
+    repository: curlimages/curl
+    tag: latest
+    pullPolicy: IfNotPresent
+  # for repositories that contain multiple plugins inside subdirectories
+  # repo will be unzipped and plugins inside 'plugins' list will be moved to plugins directory
+  repoDownloads:
+    - url: "https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"
+      replaceExisting: false
+      plugins:
+        - "minecraft-modrinth"
+        - "mclogs-uploader"
+        - "robo-avatars"
+        - "snowflakes"
+  # for direct plugin zip downloads
+  # plugin will be unzipped directly into the plugins directory
+  directDownloads: []
+    # - url: "https://example.com/path/to/plugin.zip"
+    #   name: "my-plugin"
+    #   replaceExisting: false
+
 image:
   repository: ghcr.io/pelican-dev/panel
   pullPolicy: IfNotPresent
@@ -51,7 +73,10 @@ podSecurityContext:
   fsGroup: 82
   fsGroupChangePolicy: "Always"
 
-securityContext: {}
+securityContext: 
+  runAsUser: 82
+  runAsGroup: 82
+  runAsNonRoot: true
 
 service:
   type: ClusterIP
@@ -108,21 +133,21 @@ httpRoute:
 resources:
   limits:
     cpu: 100m
-    memory: 256Mi
+    memory: 1024Mi
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 256Mi
 
-livenessProbe: &probe
-  exec:
-    command:
-      - sh
-      - /healthcheck.sh
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 1
+livenessProbe: &probe {}
+  # exec:
+  #   command:
+  #     - sh
+  #     - /healthcheck.sh
+  # initialDelaySeconds: 10
+  # periodSeconds: 10
+  # timeoutSeconds: 5
+  # failureThreshold: 3
+  # successThreshold: 1
 readinessProbe: *probe
 
 # Additional volumes on the output Deployment definition.

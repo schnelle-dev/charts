@@ -148,7 +148,10 @@ spec:
             value: "{{ .Values.pelican.redis.port }}"
           {{- if and .Values.pelican.redis.enabled .Values.pelican.redis.auth.enabled }}
           - name: REDIS_PASSWORD
-            value: {{ .Values.pelican.redis.auth.password | quote }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.redis.auth.externalSecretName }}
+                key: {{ .Values.pelican.redis.auth.passwordKey }}
           {{- end }}
           - name: CACHE_DRIVER
             value: redis

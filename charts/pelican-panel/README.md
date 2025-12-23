@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
+![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
 
 ## Additional Information
 
@@ -32,7 +32,7 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | httpRoute.parentRefs[0].sectionName | string | `"http"` |  |
 | httpRoute.rules[0].matches[0].path.type | string | `"PathPrefix"` |  |
 | httpRoute.rules[0].matches[0].path.value | string | `"/headers"` |  |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"ghcr.io/pelican-dev/panel","tag":""}` | main application image settings |
+| image | object | `{"pullPolicy":"Always","repository":"ghcr.io/pelican-dev/panel","tag":""}` | main application image settings |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
@@ -78,9 +78,9 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | pelican.redis.enabled | bool | `false` | enable or disable external redis usage |
 | pelican.redis.host | string | `""` | host of the external redis |
 | pelican.redis.port | int | `6379` | port of the external redis |
-| pluginDownloader | object | `{"directDownloads":[],"image":{"pullPolicy":"IfNotPresent","repository":"curlimages/curl","tag":"latest"},"repoDownloads":[{"plugins":["minecraft-modrinth","mclogs-uploader","robo-avatars","snowflakes"],"replaceExisting":false,"url":"https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"}]}` | download plugins using an init container |
+| pluginDownloader | object | `{"directDownloads":[],"image":{"pullPolicy":"Always","repository":"curlimages/curl","tag":"latest"},"repoDownloads":[{"plugins":["minecraft-modrinth","mclogs-uploader","robo-avatars","snowflakes"],"replaceExisting":false,"url":"https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"}]}` | download plugins using an init container |
 | pluginDownloader.directDownloads | list | `[]` | download plugin zips directly |
-| pluginDownloader.image | object | `{"pullPolicy":"IfNotPresent","repository":"curlimages/curl","tag":"latest"}` | image used to download and unzip plugins |
+| pluginDownloader.image | object | `{"pullPolicy":"Always","repository":"curlimages/curl","tag":"latest"}` | image used to download and unzip plugins |
 | pluginDownloader.repoDownloads | list | `[{"plugins":["minecraft-modrinth","mclogs-uploader","robo-avatars","snowflakes"],"replaceExisting":false,"url":"https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"}]` | download repositories of multiple plugins |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
@@ -97,9 +97,13 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | resources.limits.memory | string | `"1024Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"256Mi"` |  |
+| securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | securityContext.runAsGroup | int | `82` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `82` |  |
+| securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | service.port | int | `80` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |

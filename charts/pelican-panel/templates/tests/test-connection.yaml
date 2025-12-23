@@ -7,14 +7,23 @@ metadata:
   annotations:
     "helm.sh/hook": test
 spec:
+  securityContext:
+    fsGroup: 10000
   containers:
     - name: wget
       image: busybox
       command: ['wget']
-      {{- with .Values.securityContext }}
       securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        runAsUser: 10000
+        runAsGroup: 10000
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+        seccompProfile:
+          type: RuntimeDefault
       args: ['{{ include "pelican-panel.fullname" . }}:{{ .Values.service.port }}/up']
       resources:
         limits:
@@ -24,3 +33,4 @@ spec:
           memory: "32Mi"
           cpu: "10m"
   restartPolicy: Never
+  automountServiceAccountToken: false

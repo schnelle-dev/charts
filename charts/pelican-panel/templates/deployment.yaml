@@ -26,6 +26,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "pelican-panel.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -38,6 +39,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          resources:
+            limits:
+              memory: "32Mi"
+              cpu: "50m"
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
           command:
           - sh
           - -c
@@ -59,6 +67,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          resources:
+            limits:
+              memory: "32Mi"
+              cpu: "50m"
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
           command:
             - sh
             - -c
@@ -80,6 +95,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
           volumeMounts:
             - name: pelican-data
               mountPath: /pelican-data

@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.2.3](https://img.shields.io/badge/Version-0.2.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
+![Version: 0.3.2](https://img.shields.io/badge/Version-0.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
 
 ## Additional Information
 
@@ -49,6 +49,20 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
 | nameOverride | string | `""` |  |
+| networkPolicy | object | `{"defaultPolicy":{"allHttpsEgress":{"enabled":true},"coreDNSEgress":{"enabled":true,"namespaceSelector":{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}},"podSelector":{"matchLabels":{"k8s-app":"kube-dns"}}},"traefikIngress":{"enabled":true,"namespaceSelector":{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}}}},"egressRules":[],"enabled":true,"ingressRules":[]}` | network policy settings |
+| networkPolicy.defaultPolicy | object | `{"allHttpsEgress":{"enabled":true},"coreDNSEgress":{"enabled":true,"namespaceSelector":{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}},"podSelector":{"matchLabels":{"k8s-app":"kube-dns"}}},"traefikIngress":{"enabled":true,"namespaceSelector":{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}}}}` | default policies |
+| networkPolicy.defaultPolicy.allHttpsEgress | object | `{"enabled":true}` | allow all https egress; every egress connection to port 443 |
+| networkPolicy.defaultPolicy.allHttpsEgress.enabled | bool | `true` | enable network policy rule to allow all https egress |
+| networkPolicy.defaultPolicy.coreDNSEgress | object | `{"enabled":true,"namespaceSelector":{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}},"podSelector":{"matchLabels":{"k8s-app":"kube-dns"}}}` | coreDNS egress |
+| networkPolicy.defaultPolicy.coreDNSEgress.enabled | bool | `true` | enable network policy rule to allow egress to coreDNS |
+| networkPolicy.defaultPolicy.coreDNSEgress.namespaceSelector | object | `{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}}` | set the namespace selector to select the namespace of your coreDNS installation |
+| networkPolicy.defaultPolicy.coreDNSEgress.podSelector | object | `{"matchLabels":{"k8s-app":"kube-dns"}}` | set the pod selector to select the coreDNS pods |
+| networkPolicy.defaultPolicy.traefikIngress | object | `{"enabled":true,"namespaceSelector":{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}}}` | traefik ingress |
+| networkPolicy.defaultPolicy.traefikIngress.enabled | bool | `true` | enable network policy rule to allow ingress from traefik |
+| networkPolicy.defaultPolicy.traefikIngress.namespaceSelector | object | `{"matchLabels":{"kubernetes.io/metadata.name":"kube-system"}}` | set the namespace selector to select the namespace of your traefik installation |
+| networkPolicy.egressRules | list | `[]` | additional egress rules for the network policy |
+| networkPolicy.enabled | bool | `true` | enable or disable network policy creation |
+| networkPolicy.ingressRules | list | `[]` | additional ingress rules for the network policy |
 | nodeSelector | object | `{}` |  |
 | pelican.appUrl | string | `"https://example.com"` | the url where the panel will be accessible |
 | pelican.dataPVC | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"4Gi","storageClassName":null}` | pvc settings for pelican data (plugins, fonts, if used: sqlite) |

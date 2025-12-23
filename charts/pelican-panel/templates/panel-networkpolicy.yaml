@@ -29,7 +29,7 @@ spec:
     {{- if .Values.networkPolicy.defaultPolicy.traefikIngress.enabled }}
     - to:
         - namespaceSelector:
-            {{- toYaml .Values.networkPolicy.defaultPolicy.traefikIngress.namespaceSelector | nindent 10 }}
+            {{- toYaml .Values.networkPolicy.defaultPolicy.traefikIngress.namespaceSelector | nindent 12 }}
       ports:
         - protocol: TCP
           port: {{ .Values.service.port }}
@@ -39,7 +39,7 @@ spec:
     {{- if .Values.networkPolicy.defaultPolicy.coreDNSEgress.enabled }}
     - to:
         - namespaceSelector:
-            {{- toYaml .Values.networkPolicy.defaultPolicy.coreDNSEgress.namespaceSelector | nindent 10 }}
+            {{- toYaml .Values.networkPolicy.defaultPolicy.coreDNSEgress.namespaceSelector | nindent 12 }}
           podSelector:
             {{- toYaml .Values.networkPolicy.defaultPolicy.coreDNSEgress.podSelector | nindent 12 }}
       ports:

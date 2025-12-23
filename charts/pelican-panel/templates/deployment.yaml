@@ -34,6 +34,10 @@ spec:
         {{- if .Values.pelican.externalDatabase.enabled }}
         - name: wait-for-db
           image: busybox
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
           - sh
           - -c
@@ -51,6 +55,10 @@ spec:
         {{- if .Values.pelican.redis.enabled }}
         - name: wait-for-redis
           image: busybox
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - sh
             - -c
@@ -68,6 +76,10 @@ spec:
         - name: plugin-downloader
           image: "{{ .Values.pluginDownloader.image.repository }}:{{ .Values.pluginDownloader.image.tag }}"
           imagePullPolicy: {{ .Values.pluginDownloader.image.pullPolicy }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: pelican-data
               mountPath: /pelican-data

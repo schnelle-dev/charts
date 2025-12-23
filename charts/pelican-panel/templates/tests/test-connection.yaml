@@ -11,5 +11,16 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
+      {{- with .Values.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       args: ['{{ include "pelican-panel.fullname" . }}:{{ .Values.service.port }}/up']
+      resources:
+        limits:
+          memory: "64Mi"
+          cpu: "50m"
+        requests:
+          memory: "32Mi"
+          cpu: "10m"
   restartPolicy: Never

@@ -80,6 +80,56 @@ pluginDownloader:
     #   name: "my-plugin"
     #   replaceExisting: false
 
+# -- network policy settings
+networkPolicy:
+  # -- enable or disable network policy creation
+  enabled: true
+  # -- default policies
+  defaultPolicy:
+    # -- traefik ingress
+    traefikIngress:
+      # -- enable network policy rule to allow ingress from traefik
+      enabled: true
+      # -- set the namespace selector to select the namespace of your traefik installation
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    # -- coreDNS egress
+    coreDNSEgress:
+      # -- enable network policy rule to allow egress to coreDNS
+      enabled: true
+      # -- set the namespace selector to select the namespace of your coreDNS installation
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      # -- set the pod selector to select the coreDNS pods
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    # -- allow all https egress; every egress connection to port 443
+    allHttpsEgress:
+      # -- enable network policy rule to allow all https egress
+      enabled: true
+
+  # -- additional ingress rules for the network policy
+  ingressRules: []
+    # - from:
+    #     - podSelector:
+    #         matchLabels:
+    #           app: my-app
+    #   ports:
+    #     - protocol: TCP
+    #       port: 80
+  # -- additional egress rules for the network policy
+  egressRules: []
+    # - to:
+    #     - podSelector:
+    #         matchLabels:
+    #           app: my-database
+    #   ports:
+    #     - protocol: TCP
+    #       port: 3306
+
 # -- main application image settings
 image:
   repository: ghcr.io/pelican-dev/panel

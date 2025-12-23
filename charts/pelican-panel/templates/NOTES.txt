@@ -1,0 +1,13 @@
+{{/**
+if networkpolicy defaultpolicy allHttps is disabled AND the plugin loader is enabled, show warning
+*/}}
+{{ $networkPolicyEnabled := .Values.networkPolicy.enabled }}
+{{ $httpsEgressEnabled := .Values.networkPolicy.defaultPolicy.allHttpsEgress.enabled }}
+{{ $repoDownloads := .Values.pluginDownloader.repoDownloads }}
+{{ $directDownloads := .Values.pluginDownloader.directDownloads }}
+{{ $pluginLoaderEnabled := or $repoDownloads $directDownloads }}
+
+{{ if and $pluginLoaderEnabled (not $networkPolicyEnabled) (not $httpsEgressEnabled) }}
+# Warning: Plugin Loader with Network Policy Configuration
+The current configuration has the Plugin Loader enabled while the Network Policy's default policy for all HTTPS egress is disabled. Without custom network policies in place, this will lead to connectivity issues for the Plugin Loader when it attempts to download plugins from external sources.
+{{ end }}

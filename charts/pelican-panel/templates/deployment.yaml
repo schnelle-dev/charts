@@ -20,6 +20,8 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        app.kubernetes.io/component: application
+        app.kubernetes.io/part-of: {{ include "pelican-panel.name" . }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -107,6 +109,8 @@ spec:
               mountPath: /pelican-data
             - name: plugin-downloader-script
               mountPath: /scripts
+            - name: temp
+              mountPath: /tmp
           command:
             - sh
             - /scripts/plugin-downloader-script.sh

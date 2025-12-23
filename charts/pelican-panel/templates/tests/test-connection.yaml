@@ -4,15 +4,17 @@ metadata:
   name: "{{ include "pelican-panel.fullname" . }}-test-connection"
   labels:
     {{- include "pelican-panel.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test-connection
   annotations:
     "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   securityContext:
     fsGroup: 10000
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
+    - name: curl
+      image: curlimages/curl:latest
+      imagePullPolicy: Always
       securityContext:
         runAsUser: 10000
         runAsGroup: 10000
@@ -24,7 +26,7 @@ spec:
             - ALL
         seccompProfile:
           type: RuntimeDefault
-      args: ['{{ include "pelican-panel.fullname" . }}:{{ .Values.service.port }}/up']
+      command: ["sh", "-c", "curl -f http://{{ include "pelican-panel.fullname" . }}:{{ .Values.service.port }}/ || exit 1"]
       resources:
         limits:
           memory: "64Mi"
@@ -34,3 +36,4 @@ spec:
           cpu: "10m"
   restartPolicy: Never
   automountServiceAccountToken: false
+

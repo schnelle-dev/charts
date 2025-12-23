@@ -1,0 +1,33 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "pelican-panel.fullname" . }}-network-policy
+  labels:
+    {{- include "pelican-panel.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "pelican-panel.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: application
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # additional ingress rules from values
+    {{- with .Values.networkPolicy.ingressRules }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    # allow traffic from test-connection pod
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: test-connection
+      ports:
+        - protocol: TCP
+          port: {{ .Values.service.port }}
+  egress:
+    {{- with .Values.networkPolicy.egressRules }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

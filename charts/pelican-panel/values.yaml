@@ -80,6 +80,29 @@ pluginDownloader:
     #   name: "my-plugin"
     #   replaceExisting: false
 
+# -- network policy settings
+networkPolicy:
+  # -- enable or disable network policy creation
+  enabled: true
+  # -- ingress rules for the network policy
+  ingressRules: []
+    # - from:
+    #     - podSelector:
+    #         matchLabels:
+    #           app: my-app
+    #   ports:
+    #     - protocol: TCP
+    #       port: 80
+  # -- egress rules for the network policy
+  egressRules: []
+    # - to:
+    #     - podSelector:
+    #         matchLabels:
+    #           app: my-database
+    #   ports:
+    #     - protocol: TCP
+    #       port: 3306
+
 # -- main application image settings
 image:
   repository: ghcr.io/pelican-dev/panel

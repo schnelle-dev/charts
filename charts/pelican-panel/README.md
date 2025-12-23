@@ -51,11 +51,11 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | pelican.appUrl | string | `"https://example.com"` | the url where the panel will be accessible |
-| pelican.dataPVC | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"4Gi","storageClassName":""}` | pvc settings for pelican data (plugins, fonts, if used: sqlite) |
+| pelican.dataPVC | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"4Gi","storageClassName":null}` | pvc settings for pelican data (plugins, fonts, if used: sqlite) |
 | pelican.dataPVC.accessModes | list | `["ReadWriteOnce"]` | access modes for pvc |
 | pelican.dataPVC.enabled | bool | `true` | enable or disable automatic pvc creation and mounting |
 | pelican.dataPVC.size | string | `"4Gi"` | size of pvc |
-| pelican.dataPVC.storageClassName | string | `""` | storage class for automatic pvc creation |
+| pelican.dataPVC.storageClassName | string | `nil` | storage class for automatic pvc creation |
 | pelican.externalDatabase | object | `{"auth":{"externalSecretName":"","passwordKey":"","usernameKey":""},"database":"","enabled":false,"host":"","port":5432}` | external database settings |
 | pelican.externalDatabase.auth | object | `{"externalSecretName":"","passwordKey":"","usernameKey":""}` | auth settings for external database |
 | pelican.externalDatabase.auth.externalSecretName | string | `""` | name of an external secret containing username and password |
@@ -65,11 +65,11 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | pelican.externalDatabase.enabled | bool | `false` | enable or disable external database usage |
 | pelican.externalDatabase.host | string | `""` | host of the external database |
 | pelican.externalDatabase.port | int | `5432` | port of the external database |
-| pelican.logsPVC | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"1Gi","storageClassName":""}` | pvc settings for pelican logs |
+| pelican.logsPVC | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"1Gi","storageClassName":null}` | pvc settings for pelican logs |
 | pelican.logsPVC.accessModes | list | `["ReadWriteOnce"]` | access modes for pvc |
 | pelican.logsPVC.enabled | bool | `true` | enable or disable automatic pvc creation and mounting |
 | pelican.logsPVC.size | string | `"1Gi"` | size of pvc |
-| pelican.logsPVC.storageClassName | string | `""` | storage class for automatic pvc creation |
+| pelican.logsPVC.storageClassName | string | `nil` | storage class for automatic pvc creation |
 | pelican.redis | object | `{"auth":{"enabled":false,"externalSecretName":"","passwordKey":""},"enabled":false,"host":"","port":6379}` | external redis settings |
 | pelican.redis.auth | object | `{"enabled":false,"externalSecretName":"","passwordKey":""}` | auth settings for external redis |
 | pelican.redis.auth.enabled | bool | `false` | enable or disable redis password usage |

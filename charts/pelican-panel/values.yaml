@@ -6,7 +6,7 @@ pelican:
     # -- enable or disable automatic pvc creation and mounting
     enabled: true
     # -- storage class for automatic pvc creation
-    storageClassName: ""
+    storageClassName: Null
     # -- access modes for pvc
     accessModes:
       - ReadWriteOnce
@@ -17,7 +17,7 @@ pelican:
     # -- enable or disable automatic pvc creation and mounting
     enabled: true
     # -- storage class for automatic pvc creation
-    storageClassName: ""
+    storageClassName: Null
     # -- access modes for pvc
     accessModes:
       - ReadWriteOnce

@@ -116,6 +116,14 @@ spec:
           - name: pelican-data
             mountPath: /pelican-data
           {{- end }}
+          - name: framework-cache
+            mountPath: /var/www/html/storage/framework/cache
+          - name: filament-cache
+            mountPath: /var/www/html/bootstrap/cache
+          - name: framework-view-cache
+            mountPath: /var/www/html/storage/framework/views/
+          - name: framework-sessions
+            mountPath: /var/www/html/storage/framework/sessions
           env:
           - name: XDG_DATA_HOME
             value: /pelican-data
@@ -162,7 +170,18 @@ spec:
       - name: caddy-config
         configMap:
           name: {{ include "pelican-panel.fullname" . }}-caddy-config
+      - name: plugin-downloader-script
+        configMap:
+          name: {{ include "pelican-panel.fullname" . }}-plugin-downloader-script
       - name: temp
+        emptyDir: {}
+      - name: framework-cache
+        emptyDir: {}
+      - name: framework-view-cache
+        emptyDir: {}
+      - name: framework-sessions
+        emptyDir: {}
+      - name: filament-cache
         emptyDir: {}
       {{- if .Values.pelican.logsPVC.enabled }}
       - name: logs
@@ -174,9 +193,6 @@ spec:
         persistentVolumeClaim:
           claimName: {{ include "pelican-panel.fullname" . }}-data
       {{- end }}
-      - name: plugin-downloader-script
-        configMap:
-          name: {{ include "pelican-panel.fullname" . }}-plugin-downloader-script
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}

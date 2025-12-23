@@ -64,7 +64,7 @@ pluginDownloader:
   image:
     repository: curlimages/curl
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   # -- download repositories of multiple plugins
   repoDownloads:
     - url: "https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"
@@ -83,7 +83,7 @@ pluginDownloader:
 # -- main application image settings
 image:
   repository: ghcr.io/pelican-dev/panel
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: ""
 
 imagePullSecrets: []
@@ -107,6 +107,13 @@ securityContext:
   runAsUser: 82
   runAsGroup: 82
   runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
 
 service:
   type: ClusterIP

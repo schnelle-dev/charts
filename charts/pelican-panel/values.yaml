@@ -1,43 +1,71 @@
 pelican:
+  # -- the url where the panel will be accessible
   appUrl: "https://example.com"
-  adminEmail: ""
+  # -- pvc settings for pelican data (plugins, fonts, if used: sqlite)
   dataPVC:
+    # -- enable or disable automatic pvc creation and mounting
     enabled: true
+    # -- storage class for automatic pvc creation
     storageClassName: ""
+    # -- access modes for pvc
     accessModes:
       - ReadWriteOnce
+    # -- size of pvc
     size: 4Gi
+  # -- pvc settings for pelican logs
   logsPVC:
+    # -- enable or disable automatic pvc creation and mounting
     enabled: true
+    # -- storage class for automatic pvc creation
     storageClassName: ""
+    # -- access modes for pvc
     accessModes:
       - ReadWriteOnce
+    # -- size of pvc
     size: 1Gi
+  # -- external database settings
   externalDatabase:
+    # -- enable or disable external database usage
     enabled: false
+    # -- host of the external database
     host: ""
+    # -- port of the external database
     port: 5432
+    # -- name of the database
     database: ""
+    # -- auth settings for external database
     auth:
+      # -- name of an external secret containing username and password
       externalSecretName: ""
+      # -- key in the external secret for the username
       usernameKey: ""
+      # -- key in the external secret for the password
       passwordKey: ""
+  # -- external redis settings
   redis:
+    # -- enable or disable external redis usage
     enabled: false
+    # -- host of the external redis
     host: ""
+    # -- port of the external redis
     port: 6379
+    # -- auth settings for external redis
     auth:
+      # -- enable or disable redis password usage
       enabled: false
+      # -- name of an external secret containing the password
       externalSecretName: ""
+      # -- key in the external secret for the password
       passwordKey: ""
 
+# -- download plugins using an init container
 pluginDownloader:
+  # -- image used to download and unzip plugins
   image:
     repository: curlimages/curl
     tag: latest
     pullPolicy: IfNotPresent
-  # for repositories that contain multiple plugins inside subdirectories
-  # repo will be unzipped and plugins inside 'plugins' list will be moved to plugins directory
+  # -- download repositories of multiple plugins
   repoDownloads:
     - url: "https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"
       replaceExisting: false
@@ -46,13 +74,13 @@ pluginDownloader:
         - "mclogs-uploader"
         - "robo-avatars"
         - "snowflakes"
-  # for direct plugin zip downloads
-  # plugin will be unzipped directly into the plugins directory
+  # -- download plugin zips directly
   directDownloads: []
     # - url: "https://example.com/path/to/plugin.zip"
     #   name: "my-plugin"
     #   replaceExisting: false
 
+# -- main application image settings
 image:
   repository: ghcr.io/pelican-dev/panel
   pullPolicy: IfNotPresent
@@ -140,16 +168,16 @@ resources:
     cpu: 100m
     memory: 256Mi
 
-livenessProbe: &probe {}
-  # exec:
-  #   command:
-  #     - sh
-  #     - /healthcheck.sh
-  # initialDelaySeconds: 10
-  # periodSeconds: 10
-  # timeoutSeconds: 5
-  # failureThreshold: 3
-  # successThreshold: 1
+livenessProbe: &probe
+  httpGet:
+    path: /up
+    port: http
+
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
 readinessProbe: *probe
 
 # Additional volumes on the output Deployment definition.

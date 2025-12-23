@@ -9,6 +9,11 @@ on:
   pull_request:
     paths:
       - "charts/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest

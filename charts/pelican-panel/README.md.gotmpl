@@ -1,0 +1,25 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Additional Information
+
+This is a helm chart for [pelican panel](https://github.com/pelican-dev/panel).  
+It's still a work in progress.
+
+### Features:
+  - automatic plugin installation through links to zip files
+
+## Installing the Chart
+
+```console
+$ helm repo add foo-bar https://schnelle-dev.github.io/charts
+$ helm install my-pelican-panel-installation foo-bar/{{ template "chart.name" . }}
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}

@@ -27,7 +27,7 @@ spec:
         - protocol: TCP
           port: {{ .Values.service.port }}
     {{- if .Values.networkPolicy.defaultPolicy.traefikIngress.enabled }}
-    - to:
+    - from:
         - namespaceSelector:
             {{- toYaml .Values.networkPolicy.defaultPolicy.traefikIngress.namespaceSelector | nindent 12 }}
       ports:

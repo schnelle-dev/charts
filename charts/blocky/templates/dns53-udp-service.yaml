@@ -1,0 +1,24 @@
+{{- if .Values.dns.tlsService.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "blocky.fullname" . }}-dns53-udp
+  labels:
+    {{- include "blocky.labels" . | nindent 4 }}
+  {{- if .Values.dns.udpService.annotations }}
+  annotations:
+    {{- toYaml .Values.dns.udpService.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.dns.udpService.type }}
+  {{- if .Values.dns.udpService.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.dns.udpService.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - port: {{ .Values.blocky.config.ports.dns }}
+      protocol: UDP
+      targetPort: {{ .Values.blocky.config.ports.dns }}
+      name: dns-udp
+  selector:
+    {{- include "blocky.selectorLabels" . | nindent 4 }}
+{{- end }}

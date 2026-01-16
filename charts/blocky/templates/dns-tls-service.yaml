@@ -1,0 +1,24 @@
+{{- if .Values.dns.tlsService.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "blocky.fullname" . }}-dns-tls
+  labels:
+    {{- include "blocky.labels" . | nindent 4 }}
+  {{- if .Values.dns.tlsService.annotations }}
+  annotations:
+    {{- toYaml .Values.dns.tlsService.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.dns.tlsService.type }}
+  {{- if .Values.dns.tlsService.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.dns.tlsService.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - port: {{ .Values.blocky.config.ports.tls }}
+      protocol: TCP
+      targetPort: {{ .Values.blocky.config.ports.tls }}
+      name: dns-tls
+  selector:
+    {{- include "blocky.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -1,0 +1,15 @@
+{{- if .Values.monitoring.enablePodMonitors }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "blocky.fullname" . }}-podmonitor
+  labels:
+    {{- include "blocky.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "blocky.selectorLabels" . | nindent 6 }}
+  podMetricsEndpoints:
+    - port: http
+      interval: 10s
+{{- end }}

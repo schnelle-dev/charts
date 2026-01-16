@@ -1,0 +1,24 @@
+{{- if .Values.dns.tlsService.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "blocky.fullname" . }}-dns53-tcp
+  labels:
+    {{- include "blocky.labels" . | nindent 4 }}
+  {{- if .Values.dns.tcpService.annotations }}
+  annotations:
+    {{- toYaml .Values.dns.tcpService.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.dns.tcpService.type }}
+  {{- if .Values.dns.tcpService.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.dns.tcpService.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - port: {{ .Values.blocky.config.ports.dns }}
+      protocol: TCP
+      targetPort: {{ .Values.blocky.config.ports.dns }}
+      name: dns-tcp
+  selector:
+    {{- include "blocky.selectorLabels" . | nindent 4 }}
+{{- end }}

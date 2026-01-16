@@ -1,4 +1,4 @@
-{{- if .Values.dns.tlsService.enabled }}
+{{- if .Values.dns.udpService.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

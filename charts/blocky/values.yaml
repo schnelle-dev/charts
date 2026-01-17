@@ -39,6 +39,10 @@ http:
 monitoring:
   enablePodMonitors: false
 
+extraEnv: []
+  # - name: FOO
+  #   value: "BAR"
+
 replicaCount: 1
 
 podDisruptionBudget:

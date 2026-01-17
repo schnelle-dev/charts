@@ -3,6 +3,16 @@ entries:
   blocky:
   - apiVersion: v2
     appVersion: v0.28.2
+    created: "2026-01-17T02:15:19.428687466Z"
+    description: A Helm chart for Kubernetes
+    digest: a23cfa4732bb9440985eb68c554e24331e281a452366d83fad02bfb114c60af9
+    name: blocky
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/blocky-0.1.2/blocky-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: v0.28.2
     created: "2026-01-16T22:16:32.008492341Z"
     description: A Helm chart for Kubernetes
     digest: 4ab50d6539e4b0612deac69f4c240b2f8d34b6866578d905ebac234861a5d2f4
@@ -890,4 +900,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2026-01-16T22:16:32.00865902Z"
+generated: "2026-01-17T02:15:19.428806509Z"

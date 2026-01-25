@@ -1,0 +1,38 @@
+{{- range .Values.backups }}
+{{- if .enabled }}
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: {{ .name }}-backup
+spec:
+  backend:
+    s3:
+      endpoint: {{ $.Values.backend.s3.endpoint | quote }}
+      bucket: {{ $.Values.backend.s3.bucket | quote }}
+      accessKeyIDSecretRef:
+        name: {{ $.Values.backend.s3.accessKeyIDSecretRef.name | quote }}
+        key: {{ $.Values.backend.s3.accessKeyIDSecretRef.key | quote }}
+      secretAccessKeySecretRef:
+        name: {{ $.Values.backend.s3.secretAccessKeySecretRef.name | quote }}
+        key: {{ $.Values.backend.s3.secretAccessKeySecretRef.key | quote }}
+    repoPasswordSecretRef:
+      name: {{ $.Values.backend.repoPasswordSecretRef.name | quote }}
+      key: {{ $.Values.backend.repoPasswordSecretRef.key | quote }}
+  backup:
+    {{- if .labelSelectors }}
+    labelSelectors:
+      {{- toYaml .labelSelectors | nindent 6 }}
+    {{- end }}
+    schedule: {{ .schedule | quote }}
+    failedJobsHistoryLimit: 1
+    successfulJobsHistoryLimit: 1
+  check:
+    schedule: {{ .check.schedule | quote }}
+  prune:
+    schedule: {{ .prune.schedule | quote }}
+    retention:
+      keepLast: {{ .prune.retention.keepLast }}
+      keepDaily: {{ .prune.retention.keepDaily }}
+{{- end }}
+{{- end }}

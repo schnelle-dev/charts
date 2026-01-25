@@ -1,0 +1,47 @@
+backend:
+  s3:
+    endpoint: "" 
+    bucket: ""
+    accessKeyIDSecretRef:
+      name: -s3-repo-credentials
+      key: s3-username
+    secretAccessKeySecretRef:
+      name: s3-repo-credentials
+      key: s3-password
+  repoPasswordSecretRef:
+    name: backup-repo
+    key: repo-password
+
+backups:
+  - enabled: true
+    name: hourly
+    schedule: "0 */1 * * *"
+    labelSelectors:
+      - matchExpressions:
+          - key: dev.schnelle.kub/backup
+            operator: In
+            values:
+              - hourly
+    check:
+      schedule: "0 1 * * 1"
+    prune:
+      schedule: "0 1 * * 0"
+      retention:
+        keepLast: 48
+        keepDaily: 14
+  - enabled: true
+    name: daily
+    schedule: "0 2 * * *"
+    labelSelectors:
+      - matchExpressions:
+          - key: dev.schnelle.kub/backup
+            operator: In
+            values:
+              - daily
+    check:
+      schedule: "0 3 * * 1"
+    prune:
+      schedule: "0 3 * * 0"
+      retention:
+        keepLast: 14
+        keepDaily: 31

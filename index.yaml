@@ -34,6 +34,17 @@ entries:
   k8up-schedule:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-01-25T17:19:58.444030413Z"
+    description: A chart for easily templating k8up backup schedules using ArgoCD
+      Appsets.
+    digest: 9f56388dfee1cb95d5dedec83e672d34c4c8d9f29187cf27f386198ba7e48381
+    name: k8up-schedule
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/k8up-schedule-0.0.3/k8up-schedule-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-01-25T16:34:01.3204479Z"
     description: A chart for easily templating k8up backup schedules using ArgoCD
       Appsets.
@@ -943,4 +954,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2026-01-25T16:34:01.320550793Z"
+generated: "2026-01-25T17:19:58.444200931Z"

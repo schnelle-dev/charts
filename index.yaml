@@ -31,6 +31,18 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/blocky-0.1.0/blocky-0.1.0.tgz
     version: 0.1.0
+  k8up-schedule:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-01-25T16:24:38.769082626Z"
+    description: A chart for easily templating k8up backup schedules using ArgoCD
+      Appsets.
+    digest: 3fdfe05207193783c51c4d995805cac484e8b48bb10ea447aac54ae0e087fd2a
+    name: k8up-schedule
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/k8up-schedule-0.0.1/k8up-schedule-0.0.1.tgz
+    version: 0.0.1
   paperless:
   - apiVersion: v2
     appVersion: 2.20.5
@@ -920,4 +932,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2026-01-23T17:22:46.968716673Z"
+generated: "2026-01-25T16:24:38.769272861Z"

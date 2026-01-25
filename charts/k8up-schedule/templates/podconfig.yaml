@@ -1,0 +1,47 @@
+{{- if .Values.podConfig.enabled }}
+apiVersion: k8up.io/v1
+kind: PodConfig
+metadata:
+  name: podconfig
+  labels:
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  template:
+    spec:
+      podSecurityContext:
+        runAsUser: {{ .Values.podConfig.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.podConfig.securityContext.runAsGroup }}
+        fsGroup: {{ .Values.podConfig.securityContext.fsGroup }}
+        readOnlyRootFilesystem: {{ .Values.podConfig.securityContext.readOnlyRootFilesystem }}
+        seccompProfile:
+          type: {{ .Values.podConfig.securityContext.seccompProfile.type }}
+      containers:
+        - securityContext:
+          {{- with .Values.podConfig.securityContext }}
+              runAsUser: {{ .runAsUser }}
+              runAsGroup: {{ .runAsGroup }}
+              runAsNonRoot: {{ .runAsNonRoot }}
+              allowPrivilegeEscalation: {{ .allowPrivilegeEscalation }}
+              seccompProfile:
+                type: {{ .seccompProfile.type }}
+              capabilities:
+                  drop:
+                  {{- range .capabilities.drop }}
+                  - {{ . }}
+                  {{- end }}
+          {{- end }}
+          {{- with .Values.podConfig.env }}
+          env:
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+          {{- with .Values.podConfig.resources }}
+          resources:
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+{{- end }}

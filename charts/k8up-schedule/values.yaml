@@ -1,3 +1,6 @@
+labels: {}
+annotations: {}
+
 backend:
   s3:
     endpoint: "" 
@@ -11,6 +14,29 @@ backend:
   repoPasswordSecretRef:
     name: backup-repo
     key: repo-password
+
+podConfig:
+  enabled: true
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+    seccompProfile:
+      type: RuntimeDefault
+  env: []
 
 backups:
   - enabled: true

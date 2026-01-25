@@ -5,6 +5,14 @@ apiVersion: k8up.io/v1
 kind: Schedule
 metadata:
   name: {{ .name }}-backup
+  labels:
+    {{- with $.Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with $.Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   backend:
     s3:
@@ -34,5 +42,9 @@ spec:
     retention:
       keepLast: {{ .prune.retention.keepLast }}
       keepDaily: {{ .prune.retention.keepDaily }}
+  {{- if $.Values.podConfig.enabled }}
+  podConfigRef:
+    name: podconfig
+  {{- end }}
 {{- end }}
 {{- end }}

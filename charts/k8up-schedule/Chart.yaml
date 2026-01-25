@@ -4,5 +4,5 @@ description: A chart for easily templating k8up backup schedules using ArgoCD Ap
 
 type: application
 
-version: 0.0.2
+version: 0.0.3
 appVersion: "1.0.0"

@@ -3,6 +3,16 @@ entries:
   blocky:
   - apiVersion: v2
     appVersion: v0.28.2
+    created: "2026-01-26T09:55:04.270636648Z"
+    description: A Helm chart for Kubernetes
+    digest: 60d502f1f0da76dd08bff7f6e78c01143b2e09e0a3f448db5bd3972c16dd101e
+    name: blocky
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/blocky-0.1.4/blocky-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: v0.28.2
     created: "2026-01-26T09:40:24.759679266Z"
     description: A Helm chart for Kubernetes
     digest: bfd6869e6ebbe06bd489222377dcff62f126179effcd270fa38429f790a5b1f0
@@ -75,6 +85,17 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/k8up-schedule-0.0.1/k8up-schedule-0.0.1.tgz
     version: 0.0.1
+  livestreamdvr:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-01-26T09:55:04.707700449Z"
+    description: A Helm chart for Kubernetes
+    digest: 34fe4ffd7754548f34906e977b766036f5eb586437f24c3db5bf0f74f3d49cc6
+    name: livestreamdvr
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/livestreamdvr-0.1.0/livestreamdvr-0.1.0.tgz
+    version: 0.1.0
   paperless:
   - apiVersion: v2
     appVersion: 2.20.5
@@ -964,4 +985,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2026-01-26T09:40:24.913032913Z"
+generated: "2026-01-26T09:55:04.707901854Z"

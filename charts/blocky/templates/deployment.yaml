@@ -32,6 +32,34 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.toolbox.enabled }}
+      initContainers:
+        - name: toolbox
+          image: "{{ .Values.toolbox.image.repository }}:{{ .Values.toolbox.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.toolbox.image.pullPolicy }}
+          restartPolicy: Always
+          command: ["/bin/sh", "-c", "sleep 3600"]
+          {{- with .Values.toolbox.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.toolbox.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config.yml
+              subPath: config.yml
+              readOnly: true
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}

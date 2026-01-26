@@ -1,6 +1,6 @@
 # blocky
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.28.2](https://img.shields.io/badge/AppVersion-v0.28.2-informational?style=flat-square)
+![Version: 0.1.4](https://img.shields.io/badge/Version-0.1.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.28.2](https://img.shields.io/badge/AppVersion-v0.28.2-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -72,6 +72,22 @@ A Helm chart for Kubernetes
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
 | tolerations | list | `[]` |  |
+| toolbox.enabled | bool | `false` |  |
+| toolbox.image.pullPolicy | string | `"IfNotPresent"` |  |
+| toolbox.image.repository | string | `"busybox"` |  |
+| toolbox.image.tag | string | `"latest"` |  |
+| toolbox.resources.limits.cpu | string | `"50m"` |  |
+| toolbox.resources.limits.memory | string | `"64Mi"` |  |
+| toolbox.resources.requests.cpu | string | `"50m"` |  |
+| toolbox.resources.requests.memory | string | `"64Mi"` |  |
+| toolbox.securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| toolbox.securityContext.capabilities.add[0] | string | `"NET_BIND_SERVICE"` |  |
+| toolbox.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| toolbox.securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| toolbox.securityContext.runAsGroup | int | `10000` |  |
+| toolbox.securityContext.runAsNonRoot | bool | `true` |  |
+| toolbox.securityContext.runAsUser | int | `10000` |  |
+| toolbox.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | volumeMounts | list | `[]` |  |
 | volumes | list | `[]` |  |
 

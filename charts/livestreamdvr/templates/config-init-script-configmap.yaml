@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "livestreamdvr.fullname" . }}-config-init-script
+  labels:
+    {{- include "livestreamdvr.labels" . | nindent 4 }}
+data:
+  init-script.sh: |
+    #!/bin/sh
+    set -euo pipefail
+
+    SETTINGS_FILE="/config/config.json"
+    AUTH_FILE="/config/twitch_oauth.txt"
+
+    if [ ! -f "${SETTINGS_FILE}" ]; then
+      echo "Config file not found, skipping init script. Settings will be set on the next restart."
+      exit 0
+    fi
+
+    {{- if .Values.dvr.twitchOAuth.enabled }}
+    echo "Configuring Twitch OAuth settings..."
+
+    if [ -z "${TWITCH_CLIENT_ID:-}" ] || [ -z "${TWITCH_CLIENT_SECRET:-}" ]; then
+      echo "Twitch OAuth enabled but credentials are missing. Please check your secret configuration."
+      exit 1
+    fi
+
+    jq --arg clientId "$TWITCH_CLIENT_ID" \
+       --arg clientSecret "$TWITCH_CLIENT_SECRET" \
+       '.api_client_id = $clientId | .api_secret = $clientSecret | .capture.twitch-client-id = $clientId | .capture.twitch-client-secret = $clientSecret' \
+       "${SETTINGS_FILE}" > "${SETTINGS_FILE}.tmp" && mv "${SETTINGS_FILE}.tmp" "${SETTINGS_FILE}"
+    {{- end }}
+
+    {{- if .Values.dvr.twitchOAuthUserToken.enabled }}
+    echo "Configuring Twitch User OAuth Token..."
+
+    if [ -z "${TWITCH_OAUTH_USER_TOKEN:-}" ]; then
+      echo "Twitch User OAuth Token enabled but token is missing. Please check your secret configuration."
+      exit 1
+    fi
+
+    echo -n "${TWITCH_OAUTH_USER_TOKEN}" > "${AUTH_FILE}"
+
+    jq --arg token "$TWITCH_OAUTH_USER_TOKEN" \
+       '.twitch.voddownload.auth_enabled = true' \
+       "${SETTINGS_FILE}" > "${SETTINGS_FILE}.tmp" && mv "${SETTINGS_FILE}.tmp" "${SETTINGS_FILE}"
+
+    {{- end }}
+
+    {{- if .Values.dvr.interfacePassword.enabled }}
+    echo "Configuring DVR Interface Password..."
+
+    if [ -z "${DVR_INTERFACE_PASSWORD:-}" ]; then
+      echo "DVR Interface Password enabled but password is missing. Please check your secret configuration."
+      exit 1
+    fi
+
+    jq --arg password "$DVR_INTERFACE_PASSWORD" \
+       '.password = $password' \
+       "${SETTINGS_FILE}" > "${SETTINGS_FILE}.tmp" && mv "${SETTINGS_FILE}.tmp" "${SETTINGS_FILE}"
+    {{- end }}
+
+    echo "Initialization script completed successfully."

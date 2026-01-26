@@ -1,0 +1,161 @@
+# -- Configuration of dvr
+dvr:
+  # -- Twitch OAuth settings
+  twitchOAuth:
+    # -- Enable Twitch OAuth setting via init container
+    enabled: true
+    
+    existingSecret:
+      # -- Name of existing secret containing Twitch OAuth credentials
+      name: ""
+      # -- Key in existing secret containing Twitch Client ID
+      clientIdKey: "twitch-client-id"
+      # -- Key in existing secret containing Twitch Client Secret
+      clientSecretKey: "twitch-client-secret"
+
+  # -- Twitch User OAuth Token used for ad-free recordings
+  twitchOAuthUserToken:
+    # -- Enable Twitch User OAuth Token via init container
+    enabled: false
+
+    existingSecret:
+      # -- Name of existing secret containing Twitch User OAuth Token
+      name: ""
+      # -- Key in existing secret containing Twitch User OAuth Token
+      tokenKey: "twitch-oauth-user-token"
+
+  # -- DVR Web Interface password
+  interfacePassword:
+    # -- Enable Interface Password via init container
+    enabled: false
+
+    existingSecret:
+      # -- Name of existing secret containing Interface Password
+      name: ""
+      # -- Key in existing secret containing Interface Password
+      passwordKey: "dvr-interface-password"
+  
+
+
+image:
+  repository: mrbrax/twitchautomator
+  pullPolicy: IfNotPresent
+  tag: master
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+
+# -- Expose the service via gateway-api HTTPRoute
+# Requires Gateway API resources and suitable controller installed within the cluster
+# (see: https://gateway-api.sigs.k8s.io/guides/)
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+    - name: gateway
+      sectionName: http
+      # namespace: default
+  # Hostnames matching HTTP header.
+  hostnames:
+    - chart-example.local
+  # List of rules and filters applied.
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /headers
+  #   filters:
+  #   - type: RequestHeaderModifier
+  #     requestHeaderModifier:
+  #       set:
+  #       - name: My-Overwrite-Header
+  #         value: this-is-the-only-value
+  #       remove:
+  #       - User-Agent
+  # - matches:
+  #   - path:
+  #       type: PathPrefix
+  #       value: /echo
+  #     headers:
+  #     - name: version
+  #       value: v2
+
+resources: {}
+  # limits:
+  #   cpu: 250m
+  #   memory: 512Mi
+  # requests:
+  #   cpu: 500m
+  #   memory: 2Gi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

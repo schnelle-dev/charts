@@ -1,6 +1,6 @@
 # paperless
 
-![Version: 0.4.5](https://img.shields.io/badge/Version-0.4.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.5](https://img.shields.io/badge/AppVersion-2.20.5-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.5](https://img.shields.io/badge/AppVersion-2.20.5-informational?style=flat-square)
 
 A Helm chart for Paperless
 
@@ -28,20 +28,26 @@ A Helm chart for Paperless
 | networkPolicy.enabled | bool | `false` |  |
 | networkPolicy.ingress.enabled | bool | `false` |  |
 | networkPolicy.ingress.rules | list | `[]` |  |
-| paperless.dbHost | string | `"paperless-postgresql"` |  |
-| paperless.dbName | string | `"paperless"` |  |
-| paperless.dbPort | int | `5432` |  |
-| paperless.dbUser | string | `"paperless"` |  |
+| paperless.database.existingSecret | object | `{"dbHostKey":null,"dbNameKey":null,"dbPasswordKey":null,"dbPortKey":null,"dbUserKey":null,"name":"paperless-ngx-db-secret"}` | Optional for everything but the password. Override the direct value options above |
+| paperless.database.existingSecret.dbHostKey | string | `nil` | Optional, if not set `paperless.database.host` value will be used |
+| paperless.database.existingSecret.dbNameKey | string | `nil` | Optional, if not set `paperless.database.name` value will be used |
+| paperless.database.existingSecret.dbPasswordKey | string | `nil` | Required |
+| paperless.database.existingSecret.dbPortKey | string | `nil` | Optional, if not set `paperless.database.port` value will be used |
+| paperless.database.existingSecret.dbUserKey | string | `nil` | Optional, if not set `paperless.database.user` value will be used |
+| paperless.database.host | string | `"paperless-postgresql"` |  |
+| paperless.database.name | string | `"paperless"` |  |
+| paperless.database.port | int | `5432` |  |
+| paperless.database.user | string | `"paperless"` |  |
 | paperless.existingSecret.adminPasswordKey | string | `"admin-password"` |  |
 | paperless.existingSecret.adminUsernameKey | string | `"admin-username"` |  |
-| paperless.existingSecret.dbPasswordKey | string | `"db-password"` |  |
 | paperless.existingSecret.name | string | `"paperless-ngx-secret"` |  |
-| paperless.existingSecret.redisPasswordKey | string | `nil` |  |
-| paperless.existingSecret.secretKey | string | `"secret-key"` |  |
+| paperless.existingSecret.secretKeyKey | string | `"secret-key"` |  |
 | paperless.ocrLanguage | string | `"deu"` |  |
 | paperless.port | int | `8000` |  |
-| paperless.redisHost | string | `"paperless-valkey"` |  |
-| paperless.redisPort | int | `6379` |  |
+| paperless.redis.existingSecret | object | `{"name":"paperless-ngx-redis-secret","redisPasswordKey":null}` | Optional but recommended |
+| paperless.redis.existingSecret.redisPasswordKey | string | `nil` | Optional but recommended |
+| paperless.redis.host | string | `"paperless-valkey"` |  |
+| paperless.redis.port | int | `6379` |  |
 | paperless.url | string | `"https://paperless.example.org"` |  |
 | podDisruptionBudget.enabled | bool | `true` |  |
 | podDisruptionBudget.minAvailable | int | `1` |  |

@@ -204,6 +204,49 @@ spec:
           - name: QUEUE_DRIVER
             value: redis
           {{- end }}
+
+          # S3 BACKUP
+          {{- if .Values.pelican.backup.s3.enabled }}
+          - name: AWS_USE_PATH_STYLE_ENDPOINT
+            value: {{ .Values.pelican.backup.s3.usePathStyleEndpoint | quote }}
+          - name: AWS_DEFAULT_REGION
+          {{- if .Values.pelican.backup.s3.existingSecret.regionKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.backup.s3.existingSecret.name }}
+                key: {{ .Values.pelican.backup.s3.existingSecret.regionKey }}
+          {{- else }}
+            value: {{ .Values.pelican.backup.s3.region | quote }}
+          {{- end }}
+          - name: AWS_BACKUPS_BUCKET
+          {{- if .Values.pelican.backup.s3.existingSecret.bucketKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.backup.s3.existingSecret.name }}
+                key: {{ .Values.pelican.backup.s3.existingSecret.bucketKey }}
+          {{- else }}
+            value: {{ .Values.pelican.backup.s3.bucket | quote }}
+          {{- end }}
+          - name: AWS_ENDPOINT_URL
+          {{- if .Values.pelican.backup.s3.existingSecret.endpointKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.backup.s3.existingSecret.name }}
+                key: {{ .Values.pelican.backup.s3.existingSecret.endpointKey }}
+          {{- else }}
+            value: {{ .Values.pelican.backup.s3.endpoint | quote }}
+          {{- end }}
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.backup.s3.existingSecret.name }}
+                key: {{ .Values.pelican.backup.s3.existingSecret.accessKeyIdKey }}
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.backup.s3.existingSecret.name }}
+                key: {{ .Values.pelican.backup.s3.existingSecret.secretAccessKeyKey }}
+          {{- end }}
       volumes:
       - name: caddy-config
         configMap:

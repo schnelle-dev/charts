@@ -58,6 +58,35 @@ pelican:
       # -- key in the external secret for the password
       passwordKey: ""
 
+  # -- backup settings used for game servers
+  backup:
+    # -- automatic provision of s3 backup settings
+    s3:
+      # -- enable or disable automatic provision of s3 backup settings
+      enabled: false
+      # -- use path style endpoint (needed for some s3 compatible providers)
+      usePathStyleEndpoint: false
+      # -- s3 region; overriden if regionKey is set in existingSecret
+      region: ""
+      # -- s3 bucket name; overriden if bucketKey is set in existingSecret
+      bucket: ""
+      # -- s3 endpoint url; overriden if endpointKey is set in existingSecret
+      endpoint: ""
+      # -- REQUIRED! existing secret to get s3 settings from.
+      existingSecret:
+        # -- name of the existing secret
+        name: ""
+        # -- optional key in the existing secret for the s3 region
+        regionKey: ""
+        # -- optional key in the existing secret for the s3 bucket. overrides the bucket name above
+        bucketKey: ""
+        # -- optional key in the existing secret for the s3 endpoint
+        endpointKey: ""
+        # -- REQUIRED! key in the existing secret for the s3 access key id
+        accessKeyIdKey: ""
+        # -- REQUIRED! key in the existing secret for the s3 secret access key
+        secretAccessKeyKey: ""
+
 # -- download plugins using an init container
 pluginDownloader:
   # -- image used to download and unzip plugins

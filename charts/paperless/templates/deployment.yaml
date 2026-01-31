@@ -100,10 +100,10 @@ spec:
                   name: {{ .Values.paperless.redis.existingSecret.name }}
                   key: {{ .Values.paperless.redis.existingSecret.redisPasswordKey }}
             - name: PAPERLESS_REDIS
-              value: redis://:$(IGNORE_REDIS_PASSWORD)@{{ .Values.paperless.redisHost }}
+              value: redis://:$(IGNORE_REDIS_PASSWORD)@{{ .Values.paperless.redis.host }}
             {{- else }}
             - name: PAPERLESS_REDIS
-              value: redis://{{ .Values.paperless.redisHost }}
+              value: redis://{{ .Values.paperless.redis.host }}
             {{- end }}
             - name: PAPERLESS_DBENGINE
               value: postgresql

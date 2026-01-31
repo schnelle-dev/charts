@@ -98,17 +98,39 @@ paperless:
   url: "https://paperless.example.org"
   port: 8000
   ocrLanguage: "deu"
-  dbHost: "paperless-postgresql"
-  dbPort: 5432
-  dbName: paperless
-  dbUser: paperless
-  redisHost: "paperless-valkey"
-  redisPort: 6379
+
+  database:
+    host: "paperless-postgresql"
+    port: 5432
+    name: paperless
+    user: paperless
+
+    # -- Optional for everything but the password. Override the direct value options above
+    existingSecret:
+      name: "paperless-ngx-db-secret"
+      # -- Optional, if not set `paperless.database.host` value will be used
+      dbHostKey: Null
+      # -- Optional, if not set `paperless.database.port` value will be used
+      dbPortKey: Null
+      # -- Optional, if not set `paperless.database.name` value will be used
+      dbNameKey: Null
+      # -- Optional, if not set `paperless.database.user` value will be used
+      dbUserKey: Null
+      # -- Required
+      dbPasswordKey: Null
+
+  redis:
+    host: "paperless-valkey"
+    port: 6379
+
+    # -- Optional but recommended
+    existingSecret:
+      name: "paperless-ngx-redis-secret"
+      # -- Optional but recommended
+      redisPasswordKey: Null
 
   existingSecret:
     name: "paperless-ngx-secret"
-    secretKey: "secret-key"
-    dbPasswordKey: "db-password"
+    secretKeyKey: "secret-key"
     adminUsernameKey: "admin-username"
     adminPasswordKey: "admin-password"
-    redisPasswordKey: Null

@@ -90,15 +90,15 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.paperless.existingSecret.name }}
-                  key: {{ .Values.paperless.existingSecret.secretKey }}
+                  key: {{ .Values.paperless.existingSecret.secretKeyKey }}
             - name: PAPERLESS_PORT
               value: {{ .Values.paperless.port | quote }}
-            {{- if .Values.paperless.existingSecret.redisPasswordKey }}
+            {{- if .Values.paperless.redis.existingSecret.redisPasswordKey }}
             - name: IGNORE_REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.paperless.existingSecret.name }}
-                  key: {{ .Values.paperless.existingSecret.redisPasswordKey }}
+                  name: {{ .Values.paperless.redis.existingSecret.name }}
+                  key: {{ .Values.paperless.redis.existingSecret.redisPasswordKey }}
             - name: PAPERLESS_REDIS
               value: redis://:$(IGNORE_REDIS_PASSWORD)@{{ .Values.paperless.redisHost }}
             {{- else }}
@@ -108,13 +108,46 @@ spec:
             - name: PAPERLESS_DBENGINE
               value: postgresql
             - name: PAPERLESS_DBHOST
-              value: {{ .Values.paperless.dbHost }}
+            {{- if .Values.paperless.database.existingSecret.dbHostKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.database.existingSecret.name }}
+                  key: {{ .Values.paperless.database.existingSecret.dbHostKey }}
+            {{- else }}
+              value: {{ .Values.paperless.database.host }}
+            {{- end }}
             - name: PAPERLESS_DBPORT
-              value: {{ .Values.paperless.dbPort | quote }}
+            {{- if .Values.paperless.database.existingSecret.dbPortKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.database.existingSecret.name }}
+                  key: {{ .Values.paperless.database.existingSecret.dbPortKey }}
+            {{- else }}
+              value: {{ .Values.paperless.database.port | quote }}
+            {{- end }}
             - name: PAPERLESS_DBNAME
-              value: {{ .Values.paperless.dbName }}
+            {{- if .Values.paperless.database.existingSecret.dbNameKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.database.existingSecret.name }}
+                  key: {{ .Values.paperless.database.existingSecret.dbNameKey }}
+            {{- else }}
+              value: {{ .Values.paperless.database.name }}
+            {{- end }}
             - name: PAPERLESS_DBUSER
-              value: {{ .Values.paperless.dbUser }}
+            {{- if .Values.paperless.database.existingSecret.dbUserKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.database.existingSecret.name }}
+                  key: {{ .Values.paperless.database.existingSecret.dbUserKey }}
+            {{- else }}
+              value: {{ .Values.paperless.database.user }}
+            {{- end }}
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.paperless.database.existingSecret.name }}
+                  key: {{ .Values.paperless.database.existingSecret.dbPasswordKey }}
             - name: PAPERLESS_ADMIN_USER
               valueFrom:
                 secretKeyRef:
@@ -125,11 +158,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.paperless.existingSecret.name }}
                   key: {{ .Values.paperless.existingSecret.adminPasswordKey }}
-            - name: PAPERLESS_DBPASS
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.paperless.existingSecret.name }}
-                  key: {{ .Values.paperless.existingSecret.dbPasswordKey }}
       {{- if .Values.volumes }}
       volumes:
         - name: tmpfs

@@ -204,7 +204,13 @@ spec:
           - name: QUEUE_DRIVER
             value: redis
           {{- end }}
-
+          {{- if .Values.pelican.appKeyExistingSecret.enabled }}
+          - name: APP_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.appKeyExistingSecret.name }}
+                key: {{ .Values.pelican.appKeyExistingSecret.key }}
+          {{- end }}
           # S3 BACKUP
           {{- if .Values.pelican.backup.s3.enabled }}
           - name: AWS_USE_PATH_STYLE_ENDPOINT

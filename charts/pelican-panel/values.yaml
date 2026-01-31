@@ -1,6 +1,14 @@
 pelican:
   # -- the url where the panel will be accessible
   appUrl: "https://example.com"
+  # -- settings for the pelican app key; IF NOT SET, AUTOMATIC GENERATION OF IT COULD LEAD TO LONG-TERM DATALOSS IF YOU DON'T SAVE IT... just set it here
+  appKeyExistingSecret:
+    # -- enable or disable usage of an existing secret for the app key
+    enabled: false
+    # -- name of an existing secret containing the app key
+    name: ""
+    # -- key in the existing secret for the app key
+    key: ""
   # -- pvc settings for pelican data (plugins, fonts, if used: sqlite)
   dataPVC:
     # -- enable or disable automatic pvc creation and mounting

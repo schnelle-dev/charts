@@ -269,6 +269,60 @@ spec:
                 name: {{ .Values.pelican.backup.s3.existingSecret.name }}
                 key: {{ .Values.pelican.backup.s3.existingSecret.secretAccessKeyKey }}
           {{- end }}
+          # MAILER SETTINGS
+          {{- if .Values.pelican.mail.enabled }}
+          - name: MAIL_MAILER
+            value: {{ .Values.pelican.mail.driver | quote }}
+          - name: MAIL_SCHEME
+            value: {{ .Values.pelican.mail.scheme | quote }}
+          - name: MAIL_HOST
+          {{- if .Values.pelican.mail.smtp.existingSecret.hostKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
+                key: {{ .Values.pelican.mail.smtp.existingSecret.hostKey }}
+          {{- else }}
+            value: {{ .Values.pelican.mail.smtp.host | quote }}
+          {{- end }}
+          - name: MAIL_PORT
+          {{- if .Values.pelican.mail.smtp.existingSecret.portKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
+                key: {{ .Values.pelican.mail.smtp.existingSecret.portKey }}
+          {{- else }}
+            value: {{ .Values.pelican.mail.smtp.port | quote }}
+          {{- end }}
+          - name: MAIL_FROM_ADDRESS
+          {{- if .Values.pelican.mail.smtp.existingSecret.fromAddressKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
+                key: {{ .Values.pelican.mail.smtp.existingSecret.fromAddressKey }}
+          {{- else }}
+            value: {{ .Values.pelican.mail.smtp.fromAddress | quote }}
+          {{- end }}
+          - name: MAIL_FROM_NAME
+          {{- if .Values.pelican.mail.smtp.existingSecret.fromNameKey }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
+                key: {{ .Values.pelican.mail.smtp.existingSecret.fromNameKey }}
+          {{- else }}
+            value: {{ .Values.pelican.mail.smtp.fromName | quote }}
+          {{- end }}
+          - name: MAIL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
+                key: {{ .Values.pelican.mail.smtp.existingSecret.usernameKey }}
+          - name: MAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
+                key: {{ .Values.pelican.mail.smtp.existingSecret.passwordKey }}
+          {{- end }}
+
       volumes:
       - name: caddy-config
         configMap:

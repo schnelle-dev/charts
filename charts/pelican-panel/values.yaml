@@ -100,6 +100,40 @@ pelican:
         accessKeyIdKey: ""
         # -- REQUIRED! key in the existing secret for the s3 secret access key
         secretAccessKeyKey: ""
+  # -- mailer settings for pelican
+  mail:
+    # -- enable or disable mailer configuration
+    enabled: false
+    # -- mailer driver; options can be seen in the pelican WebUI
+    driver: smtp
+    # -- mailer scheme; overriden if schemeKey is set in existingSecret
+    scheme: smtp
+    # -- smtp settings; only used if driver is set to smtp
+    smtp:
+      # -- host of the smtp server; overriden if hostKey is set in existingSecret
+      host: "smtp.example.com"
+      # -- port of the smtp server; overriden if portKey is set in existingSecret
+      port: 587
+      # -- mail from address; overriden if fromAddressKey is set in existingSecret
+      fromAddress: "no-reply@mypaneladdress.TLD"
+      # -- mail from name; overriden if fromNameKey is set in existingSecret
+      fromName: "Pelican Panel"
+      # -- existing secret to get smtp settings from.
+      existingSecret:
+        # -- name of the existing secret
+        name: ""
+        # -- optional key in the existing secret for the smtp host
+        hostKey: ""
+        # -- optional key in the existing secret for the smtp port
+        portKey: ""
+        # -- optional key in the existing secret for the mail from address
+        fromAddressKey: ""
+        # -- optional key in the existing secret for the mail from name
+        fromNameKey: ""
+        # -- REQUIRED! key in the existing secret for the smtp username
+        usernameKey: ""
+        # -- REQUIRED! key in the existing secret for the smtp password
+        passwordKey: ""
 
 # -- download plugins using an init container
 pluginDownloader:

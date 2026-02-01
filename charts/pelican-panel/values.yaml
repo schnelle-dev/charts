@@ -1,6 +1,10 @@
 pelican:
   # -- the url where the panel will be accessible
   appUrl: "https://example.com"
+  # -- optional name for the panel. Will be shown in the UI in some places.
+  appName: Null
+  # -- trusted proxies setting. mainly necessary for uploading files
+  trustedProxies: ""
   # -- settings for the pelican app key; IF NOT SET, AUTOMATIC GENERATION OF IT COULD LEAD TO LONG-TERM DATALOSS IF YOU DON'T SAVE IT... just set it here
   appKeyExistingSecret:
     # -- enable or disable usage of an existing secret for the app key
@@ -72,6 +76,8 @@ pelican:
     s3:
       # -- enable or disable automatic provision of s3 backup settings
       enabled: false
+      # -- whether to set backup mode to s3. leave this on true unless you know what you're doing
+      useAsBackupDriver: true
       # -- use path style endpoint (needed for some s3 compatible providers)
       usePathStyleEndpoint: false
       # -- s3 region; overriden if regionKey is set in existingSecret

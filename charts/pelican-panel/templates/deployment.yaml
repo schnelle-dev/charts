@@ -142,7 +142,7 @@ spec:
           - name: caddy-config
             mountPath: /etc/caddy
           {{- with .Values.volumeMounts }}
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml . | nindent 10 }}
           {{- end }}
           {{- if .Values.pelican.logsPVC.enabled }}
           - name: logs
@@ -353,7 +353,7 @@ spec:
           claimName: {{ include "pelican-panel.fullname" . }}-data
       {{- end }}
       {{- with .Values.volumes }}
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 6 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

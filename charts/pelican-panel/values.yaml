@@ -314,14 +314,17 @@ livenessProbe: &probe
   successThreshold: 1
 readinessProbe: *probe
 
-# Additional volumes on the output Deployment definition.
+# -- Additional env values
+env: []
+
+# -- Additional volumes on the output Deployment definition.
 volumes: []
   # - name: foo
   #   secret:
   #     secretName: mysecret
   #     optional: false
 
-# Additional volumeMounts on the output Deployment definition.
+# -- Additional volumeMounts on the output Deployment definition.
 volumeMounts: []
   # - name: foo
   #   mountPath: "/etc/foo"

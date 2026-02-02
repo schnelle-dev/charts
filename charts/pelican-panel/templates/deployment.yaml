@@ -322,7 +322,9 @@ spec:
                 name: {{ .Values.pelican.mail.smtp.existingSecret.name }}
                 key: {{ .Values.pelican.mail.smtp.existingSecret.passwordKey }}
           {{- end }}
-
+          {{- with .Values.env }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
       volumes:
       - name: caddy-config
         configMap:

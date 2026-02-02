@@ -316,6 +316,8 @@ readinessProbe: *probe
 
 # -- Additional env values
 env: []
+  # - name: FOO
+  #   value: "bar"
 
 # -- Additional volumes on the output Deployment definition.
 volumes: []

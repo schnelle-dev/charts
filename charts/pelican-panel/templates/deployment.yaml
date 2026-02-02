@@ -249,7 +249,7 @@ spec:
           {{- else }}
             value: {{ .Values.pelican.backup.s3.bucket | quote }}
           {{- end }}
-          - name: AWS_ENDPOINT_URL
+          - name: AWS_ENDPOINT
           {{- if .Values.pelican.backup.s3.existingSecret.endpointKey }}
             valueFrom:
               secretKeyRef:
@@ -323,7 +323,7 @@ spec:
                 key: {{ .Values.pelican.mail.smtp.existingSecret.passwordKey }}
           {{- end }}
           {{- with .Values.env }}
-          {{- toYaml . | nindent 12 }}
+          {{- toYaml . | nindent 10 }}
           {{- end }}
       volumes:
       - name: caddy-config

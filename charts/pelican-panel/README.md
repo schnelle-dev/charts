@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.4.4](https://img.shields.io/badge/Version-0.4.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
+![Version: 0.4.5](https://img.shields.io/badge/Version-0.4.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
 
 ## Additional Information
 
@@ -24,6 +24,8 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| caddy.maxBodySize | string | `"100M"` | Max body size for caddy, e.g. for file uploads. Formatted for PHP_VALUE env var |
+| caddy.trustedProxies | string | `"10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"` | Trusted proxies config for caddy; CIDRs separated by spaces |
 | env | list | `[]` | Additional env values |
 | fullnameOverride | string | `""` |  |
 | httpRoute.annotations | object | `{}` |  |

@@ -1,3 +1,9 @@
+caddy:
+  # -- Trusted proxies config for caddy; CIDRs separated by spaces
+  trustedProxies: "10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
+  # -- Max body size for caddy, e.g. for file uploads. Formatted for PHP_VALUE env var
+  maxBodySize: "100M"
+
 pelican:
   # -- the url where the panel will be accessible
   appUrl: "https://example.com"

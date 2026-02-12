@@ -34,7 +34,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
-        {{- if .Values.pelican.externalDatabase.enabled }}
+        {{- if and .Values.pelican.externalDatabase.enabled .Values.pelican.externalDatabase.waitForDatabase }}
         - name: wait-for-db
           image: busybox
           {{- with .Values.securityContext }}

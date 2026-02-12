@@ -45,6 +45,8 @@ pelican:
   externalDatabase:
     # -- enable or disable external database usage
     enabled: false
+    # -- wait for database to be ready before starting pelican
+    waitForDatabase: true
     # -- host of the external database
     host: ""
     # -- port of the external database

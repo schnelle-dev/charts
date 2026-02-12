@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.4.5](https://img.shields.io/badge/Version-0.4.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
+![Version: 0.4.6](https://img.shields.io/badge/Version-0.4.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
 
 ## Additional Information
 
@@ -93,7 +93,7 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | pelican.dataPVC.enabled | bool | `true` | enable or disable automatic pvc creation and mounting |
 | pelican.dataPVC.size | string | `"4Gi"` | size of pvc |
 | pelican.dataPVC.storageClassName | string | `nil` | storage class for automatic pvc creation |
-| pelican.externalDatabase | object | `{"auth":{"externalSecretName":"","passwordKey":"","usernameKey":""},"database":"","enabled":false,"host":"","port":5432}` | external database settings |
+| pelican.externalDatabase | object | `{"auth":{"externalSecretName":"","passwordKey":"","usernameKey":""},"database":"","enabled":false,"host":"","port":5432,"waitForDatabase":true}` | external database settings |
 | pelican.externalDatabase.auth | object | `{"externalSecretName":"","passwordKey":"","usernameKey":""}` | auth settings for external database |
 | pelican.externalDatabase.auth.externalSecretName | string | `""` | name of an external secret containing username and password |
 | pelican.externalDatabase.auth.passwordKey | string | `""` | key in the external secret for the password |
@@ -102,6 +102,7 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | pelican.externalDatabase.enabled | bool | `false` | enable or disable external database usage |
 | pelican.externalDatabase.host | string | `""` | host of the external database |
 | pelican.externalDatabase.port | int | `5432` | port of the external database |
+| pelican.externalDatabase.waitForDatabase | bool | `true` | wait for database to be ready before starting pelican |
 | pelican.logsPVC | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"1Gi","storageClassName":null}` | pvc settings for pelican logs |
 | pelican.logsPVC.accessModes | list | `["ReadWriteOnce"]` | access modes for pvc |
 | pelican.logsPVC.enabled | bool | `true` | enable or disable automatic pvc creation and mounting |

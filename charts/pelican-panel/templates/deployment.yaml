@@ -206,12 +206,16 @@ spec:
                 name: {{ .Values.pelican.redis.auth.externalSecretName }}
                 key: {{ .Values.pelican.redis.auth.passwordKey }}
           {{- end }}
-          {{- end }}
-
+          - name: CACHE_DRIVER
+            value: redis
+          - name: CACHE_STORE
+            value: redis
+          {{- else }}
           - name: CACHE_DRIVER
             value: database
           - name: CACHE_STORE # while laravel uses CACHE_DRIVER afaik, pelican seems to need this one. I just set both to be sure
             value: database
+          {{- end }}
           - name: QUEUE_DRIVER
             value: database
           - name: QUEUE_CONNECTION

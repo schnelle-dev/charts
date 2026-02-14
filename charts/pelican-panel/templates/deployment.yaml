@@ -33,7 +33,9 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{if or .Values.pelican.externalDatabase.enabled .Values.pelican.redis.enabled .Values.pluginDownloader.enabled }}
       initContainers:
+      {{- end }}
         {{- if and .Values.pelican.externalDatabase.enabled .Values.pelican.externalDatabase.waitForDatabase }}
         - name: wait-for-db
           image: busybox
@@ -90,6 +92,7 @@ spec:
             - name: REDIS_PORT
               value: "{{ .Values.pelican.redis.port }}"
         {{- end }}
+        {{- if .Values.pluginDownloader.enabled }}
         - name: plugin-downloader
           image: "{{ .Values.pluginDownloader.image.repository }}:{{ .Values.pluginDownloader.image.tag }}"
           imagePullPolicy: {{ .Values.pluginDownloader.image.pullPolicy }}
@@ -114,6 +117,7 @@ spec:
           command:
             - sh
             - /scripts/plugin-downloader-script.sh
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
@@ -189,32 +193,34 @@ spec:
                 name: {{ .Values.pelican.externalDatabase.auth.externalSecretName }}
                 key: {{ .Values.pelican.externalDatabase.auth.passwordKey }}
           {{- end }}
+
           {{- if .Values.pelican.redis.enabled }}
           - name: REDIS_HOST
             value: {{ .Values.pelican.redis.host | quote }}
           - name: REDIS_PORT
             value: "{{ .Values.pelican.redis.port }}"
-          {{- if and .Values.pelican.redis.enabled .Values.pelican.redis.auth.enabled }}
+          {{- if .Values.pelican.redis.auth.enabled }}
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.pelican.redis.auth.externalSecretName }}
                 key: {{ .Values.pelican.redis.auth.passwordKey }}
           {{- end }}
-          {{- if .Values.pelican.trustedProxies }}
-          - name: TRUSTED_PROXIES
-            value: {{ .Values.pelican.trustedProxies | quote }}
           {{- end }}
+
           - name: CACHE_DRIVER
-            value: redis
+            value: database
           - name: CACHE_STORE # while laravel uses CACHE_DRIVER afaik, pelican seems to need this one. I just set both to be sure
-            value: redis
+            value: database
           - name: QUEUE_DRIVER
             value: database
           - name: QUEUE_CONNECTION
             value: database
           - name: SESSION_DRIVER
             value: database
+          {{- if .Values.pelican.trustedProxies }}
+          - name: TRUSTED_PROXIES
+            value: {{ .Values.pelican.trustedProxies | quote }}
           {{- end }}
           {{- if .Values.pelican.appKeyExistingSecret.enabled }}
           - name: APP_KEY

@@ -142,6 +142,8 @@ pelican:
         passwordKey: ""
 
 pluginDownloader:
+  # -- enable or disable the plugin downloader init container
+  enabled: true
   # -- image used to download and unzip plugins
   image:
     repository: curlimages/curl

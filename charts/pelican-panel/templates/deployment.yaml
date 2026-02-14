@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "pelican-panel.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       {{- include "pelican-panel.selectorLabels" . | nindent 6 }}

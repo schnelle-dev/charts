@@ -11,7 +11,7 @@ pelican:
   appName: Null
   # -- trusted proxies setting. mainly necessary for uploading files
   trustedProxies: ""
-  # -- settings for the pelican app key; IF NOT SET, AUTOMATIC GENERATION OF IT COULD LEAD TO LONG-TERM DATALOSS IF YOU DON'T SAVE IT... just set it here
+
   appKeyExistingSecret:
     # -- enable or disable usage of an existing secret for the app key
     enabled: false
@@ -19,9 +19,9 @@ pelican:
     name: ""
     # -- key in the existing secret for the app key
     key: ""
-  # -- pvc settings for pelican data (plugins, fonts, if used: sqlite)
+
   dataPVC:
-    # -- enable or disable automatic pvc creation and mounting
+    # -- enable or disable automatic pvc creation and mounting for pelican data
     enabled: true
     # -- storage class for automatic pvc creation
     storageClassName: Null
@@ -30,9 +30,9 @@ pelican:
       - ReadWriteOnce
     # -- size of pvc
     size: 4Gi
-  # -- pvc settings for pelican logs
+
   logsPVC:
-    # -- enable or disable automatic pvc creation and mounting
+    # -- enable or disable automatic pvc creation and mounting for pelican logs
     enabled: true
     # -- storage class for automatic pvc creation
     storageClassName: Null
@@ -41,7 +41,7 @@ pelican:
       - ReadWriteOnce
     # -- size of pvc
     size: 1Gi
-  # -- external database settings
+
   externalDatabase:
     # -- enable or disable external database usage
     enabled: false
@@ -61,7 +61,7 @@ pelican:
       usernameKey: ""
       # -- key in the external secret for the password
       passwordKey: ""
-  # -- external redis settings
+
   redis:
     # -- enable or disable external redis usage
     enabled: false
@@ -78,9 +78,7 @@ pelican:
       # -- key in the external secret for the password
       passwordKey: ""
 
-  # -- backup settings used for game servers
   backup:
-    # -- automatic provision of s3 backup settings
     s3:
       # -- enable or disable automatic provision of s3 backup settings
       enabled: false
@@ -94,7 +92,7 @@ pelican:
       bucket: ""
       # -- s3 endpoint url; overriden if endpointKey is set in existingSecret
       endpoint: ""
-      # -- REQUIRED! existing secret to get s3 settings from.
+
       existingSecret:
         # -- name of the existing secret
         name: ""
@@ -108,7 +106,7 @@ pelican:
         accessKeyIdKey: ""
         # -- REQUIRED! key in the existing secret for the s3 secret access key
         secretAccessKeyKey: ""
-  # -- mailer settings for pelican
+
   mail:
     # -- enable or disable mailer configuration
     enabled: false
@@ -116,7 +114,7 @@ pelican:
     driver: smtp
     # -- mailer scheme; overriden if schemeKey is set in existingSecret
     scheme: smtp
-    # -- smtp settings; only used if driver is set to smtp
+
     smtp:
       # -- host of the smtp server; overriden if hostKey is set in existingSecret
       host: "smtp.example.com"
@@ -143,7 +141,6 @@ pelican:
         # -- REQUIRED! key in the existing secret for the smtp password
         passwordKey: ""
 
-# -- download plugins using an init container
 pluginDownloader:
   # -- image used to download and unzip plugins
   image:
@@ -165,13 +162,11 @@ pluginDownloader:
     #   name: "my-plugin"
     #   replaceExisting: false
 
-# -- network policy settings
 networkPolicy:
   # -- enable or disable network policy creation
   enabled: true
-  # -- default policies
+
   defaultPolicy:
-    # -- traefik ingress
     traefikIngress:
       # -- enable network policy rule to allow ingress from traefik
       enabled: true
@@ -179,7 +174,6 @@ networkPolicy:
       namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: kube-system
-    # -- coreDNS egress
     coreDNSEgress:
       # -- enable network policy rule to allow egress to coreDNS
       enabled: true
@@ -191,9 +185,8 @@ networkPolicy:
       podSelector:
         matchLabels:
           k8s-app: kube-dns
-    # -- allow all https egress; every egress connection to port 443
     allHttpsEgress:
-      # -- enable network policy rule to allow all https egress
+      # -- allow all https egress; every egress connection to port 443
       enabled: true
 
   # -- additional ingress rules for the network policy
@@ -220,6 +213,9 @@ image:
   repository: ghcr.io/pelican-dev/panel
   pullPolicy: Always
   tag: ""
+
+# -- number of replicas for the Deployment; pelican only supports 1 replica officially
+replicas: 1
 
 imagePullSecrets: []
 nameOverride: ""

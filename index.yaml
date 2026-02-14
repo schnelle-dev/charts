@@ -980,6 +980,16 @@ entries:
     version: 0.1.0
   pterodactyl-panel:
   - apiVersion: v2
+    appVersion: v1.12.1
+    created: "2026-02-14T23:13:56.829434523Z"
+    description: Pterodactyl Panel Helm Chart
+    digest: 7b0746a0eac073cebd6c3ff11b33562a320e185e52cec9b5c93f79857d69c522
+    name: pterodactyl-panel
+    type: application
+    urls:
+    - https://github.com/schnelle-dev/charts/releases/download/pterodactyl-panel-0.4.1/pterodactyl-panel-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
     appVersion: v1.12.0
     created: "2026-01-07T12:08:48.031830738Z"
     description: Pterodactyl Panel Helm Chart
@@ -1145,4 +1155,4 @@ entries:
     urls:
     - https://github.com/schnelle-dev/charts/releases/download/staticpages-0.1.1/staticpages-0.1.1.tgz
     version: 0.1.1
-generated: "2026-02-14T17:18:03.025425872Z"
+generated: "2026-02-14T23:13:56.829685551Z"

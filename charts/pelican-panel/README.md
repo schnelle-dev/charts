@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.4.7](https://img.shields.io/badge/Version-0.4.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
+![Version: 0.4.8](https://img.shields.io/badge/Version-0.4.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
 
 ## Additional Information
 
@@ -120,6 +120,7 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | pelican.redis.port | int | `6379` | port of the external redis |
 | pelican.trustedProxies | string | `""` | trusted proxies setting. mainly necessary for uploading files |
 | pluginDownloader.directDownloads | list | `[]` | download plugin zips directly |
+| pluginDownloader.enabled | bool | `true` | enable or disable the plugin downloader init container |
 | pluginDownloader.image | object | `{"pullPolicy":"Always","repository":"curlimages/curl","tag":"latest"}` | image used to download and unzip plugins |
 | pluginDownloader.repoDownloads | list | `[{"plugins":["minecraft-modrinth","mclogs-uploader","robo-avatars","snowflakes"],"replaceExisting":false,"url":"https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip"}]` | download repositories of multiple plugins |
 | podAnnotations | object | `{}` |  |

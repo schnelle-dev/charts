@@ -93,31 +93,8 @@ spec:
               value: "{{ .Values.pelican.redis.port }}"
         {{- end }}
         {{- if .Values.pluginDownloader.enabled }}
-        - name: plugin-downloader
-          image: "{{ .Values.pluginDownloader.image.repository }}:{{ .Values.pluginDownloader.image.tag }}"
-          imagePullPolicy: {{ .Values.pluginDownloader.image.pullPolicy }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "100m"
-            requests:
-              memory: "64Mi"
-              cpu: "50m"
-          volumeMounts:
-            - name: pelican-data
-              mountPath: /pelican-data
-            - name: plugin-downloader-script
-              mountPath: /scripts
-            - name: temp
-              mountPath: /tmp
-          command:
-            - sh
-            - /scripts/plugin-downloader-script.sh
-      {{- end }}
+        {{- include "pelican-panel.plugin-download-container" . | nindent 8 -}}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
@@ -145,14 +122,14 @@ spec:
           volumeMounts:
           - name: caddy-config
             mountPath: /etc/caddy
+          - name: temp
+            mountPath: /tmp
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 10 }}
           {{- end }}
           {{- if .Values.pelican.logsPVC.enabled }}
           - name: logs
             mountPath: /var/www/html/storage/logs
-          - name: temp
-            mountPath: /tmp
           {{- end }}
           {{- if .Values.pelican.dataPVC.enabled }}
           - name: pelican-data
@@ -339,9 +316,6 @@ spec:
       - name: caddy-config
         configMap:
           name: {{ include "pelican-panel.fullname" . }}-caddy-config
-      - name: plugin-downloader-script
-        configMap:
-          name: {{ include "pelican-panel.fullname" . }}-plugin-downloader-script
       - name: temp
         emptyDir: {}
       - name: framework-cache
@@ -352,6 +326,11 @@ spec:
         emptyDir: {}
       - name: filament-cache
         emptyDir: {}
+      {{- if .Values.pluginDownloader.enabled }}
+      - name: plugin-downloader-script
+        configMap:
+          name: {{ include "pelican-panel.fullname" . }}-plugin-downloader-script
+      {{- end }}
       {{- if .Values.pelican.logsPVC.enabled }}
       - name: logs
         persistentVolumeClaim:

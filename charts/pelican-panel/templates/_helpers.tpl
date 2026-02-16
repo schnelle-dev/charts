@@ -60,3 +60,34 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Plugin downloader container
+*/}}
+{{- define "pelican-panel.plugin-download-container" -}}
+- name: plugin-downloader
+  image: "{{ .Values.pluginDownloader.image.repository }}:{{ .Values.pluginDownloader.image.tag }}"
+  imagePullPolicy: {{ .Values.pluginDownloader.image.pullPolicy }}
+  {{- with .Values.securityContext }}
+  securityContext:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    limits:
+        memory: "128Mi"
+        cpu: "100m"
+    requests:
+        memory: "64Mi"
+        cpu: "50m"
+  volumeMounts:
+  - name: pelican-data
+    mountPath: /pelican-data
+  - name: plugin-downloader-script
+    mountPath: /scripts
+  - name: temp
+    mountPath: /tmp
+  command:
+  - sh
+  - /scripts/plugin-downloader-script.sh
+{{- end -}}

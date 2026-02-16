@@ -6,6 +6,10 @@ metadata:
     {{- include "pelican-panel.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "pelican-panel.selectorLabels" . | nindent 6 }}

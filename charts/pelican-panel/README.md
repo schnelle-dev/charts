@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.4.12](https://img.shields.io/badge/Version-0.4.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta30](https://img.shields.io/badge/AppVersion-v1.0.0--beta30-informational?style=flat-square)
+![Version: 0.4.13](https://img.shields.io/badge/Version-0.4.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta33](https://img.shields.io/badge/AppVersion-v1.0.0--beta33-informational?style=flat-square)
 
 ## Additional Information
 
@@ -91,6 +91,7 @@ $ helm install my-pelican-panel-installation foo-bar/pelican-panel
 | pelican.externalDatabase.enabled | bool | `false` | enable or disable external database usage |
 | pelican.externalDatabase.host | string | `""` | host of the external database |
 | pelican.externalDatabase.port | int | `5432` | port of the external database |
+| pelican.externalDatabase.type | string | `"mariadb"` | type of the database; options can be seen in the pelican WebUI |
 | pelican.externalDatabase.waitForDatabase | bool | `true` | wait for database to be ready before starting pelican |
 | pelican.logsPVC.accessModes | list | `["ReadWriteOnce"]` | access modes for pvc |
 | pelican.logsPVC.enabled | bool | `true` | enable or disable automatic pvc creation and mounting for pelican logs |

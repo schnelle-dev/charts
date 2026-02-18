@@ -2,7 +2,7 @@
 
 A Helm chart for Kubernetes
 
-![Version: 0.4.13](https://img.shields.io/badge/Version-0.4.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta33](https://img.shields.io/badge/AppVersion-v1.0.0--beta33-informational?style=flat-square)
+![Version: 0.4.14](https://img.shields.io/badge/Version-0.4.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0-beta33](https://img.shields.io/badge/AppVersion-v1.0.0--beta33-informational?style=flat-square)
 
 ## Additional Information
 

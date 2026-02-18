@@ -150,6 +150,8 @@ spec:
           env:
           - name: XDG_DATA_HOME
             value: /pelican-data
+          - name: BEHIND_PROXY
+            value: "true"
           - name: APP_URL
             value: {{ .Values.pelican.appUrl | quote }}
           {{- if .Values.pelican.appName }}

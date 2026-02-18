@@ -157,6 +157,8 @@ spec:
             value: {{ .Values.pelican.appName | quote }}
           {{- end }}
           {{- if .Values.pelican.externalDatabase.enabled }}
+          - name: DB_CONNECTION
+            value: {{ .Values.pelican.externalDatabase.type | quote }}
           - name: DB_HOST
             value: {{ .Values.pelican.externalDatabase.host | quote }}
           - name: DB_PORT

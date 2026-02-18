@@ -53,6 +53,8 @@ pelican:
     port: 5432
     # -- name of the database
     database: ""
+    # -- type of the database; options can be seen in the pelican WebUI
+    type: mariadb
     # -- auth settings for external database
     auth:
       # -- name of an external secret containing username and password

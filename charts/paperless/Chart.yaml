@@ -4,7 +4,7 @@ description: A Helm chart for Paperless
 
 type: application
 
-version: 0.5.3
+version: 0.5.4
 
 # renovate: image=ghcr.io/paperless-ngx/paperless-ngx
-appVersion: 2.20.7
+appVersion: 2.20.8
